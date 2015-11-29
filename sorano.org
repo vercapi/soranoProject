@@ -18,7 +18,7 @@
 
 ** Setup salt master docker
 
-***   build the salt master
+*** build the salt master
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
       docker build -t vercapi/salt_master .
       #+END_SRC
@@ -47,10 +47,34 @@
       ---> 044a47aeba10
       Successfully built 044a47aeba10
 
-***   Starting the saltmaster manually
-      
-      #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+*** Starting the saltmaster manually
+    
+    Start as daemon
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+      docker run -id -h sorano.salt -p 4505:4505 -p 4506:4506 --name saltmaster vercapi/salt_master
+    #+END_SRC
 
-      #+END_SRC
+    #+RESULTS:
+    : 886e92a46d469a7c905679670943e70b6594723e7220124bf15f7653eacf6806
+    
+    Open connection to salt master to see if it is running
+    #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    nc -v 127.0.0.1 4506 
+    #+END_SRC
+
+    Check running dockers
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    docker ps
+    #+END_SRC
+
+    Manually stop the maching
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    docker stop saltmaster
+    #+END_SRC
+
+    Attach to running machine
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    docker exec -it saltmaster bash
+    #+END_SRC
 
 *** TODO Set up automatic start
