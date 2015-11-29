@@ -1,3 +1,7 @@
+#+TITLE: Sorano Project
+
+:var soranoSudo = 
+
 * Setup
 
 ** Install docker on sorano.home
@@ -12,5 +16,41 @@
      systemctl enable docker
    #+END_SRC
 
-  
-  
+** Setup salt master docker
+
+***   build the salt master
+      #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
+      docker build -t vercapi/salt_master .
+      #+END_SRC
+      
+      #+RESULTS:
+      Sending build context to Docker daemon 2.048 kBSending build context to Docker daemon 2.048 kB
+      Step 1 : FROM debian:jessie
+      ---> 91bac885982d
+      Step 2 : RUN apt-get update && apt-get install -y wget
+      ---> Using cache
+      ---> 2fda7ad65f9d
+      Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+      ---> Using cache
+      ---> 7b42cadccb6f
+      Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+      ---> Using cache
+      ---> a13b8e49d623
+      Step 5 : RUN apt-get update && apt-get install -y salt-master
+      ---> Using cache
+      ---> 740e7725090a
+      Step 6 : EXPOSE 4505 4506
+      ---> Using cache
+      ---> 1ee7f675dece
+      Step 7 : CMD salt-master
+      ---> Using cache
+      ---> 044a47aeba10
+      Successfully built 044a47aeba10
+
+***   Starting the saltmaster manually
+      
+      #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+
+      #+END_SRC
+
+*** TODO Set up automatic start
