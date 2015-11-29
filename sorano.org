@@ -1,9 +1,8 @@
 #+TITLE: Sorano Project
 
-:var soranoSudo = 
 
 * Setup
-
+** TODO One step install script
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -17,46 +16,71 @@
    #+END_SRC
 
 ** Setup salt master docker
+   
+   Set up dependencies for salt master docker to run
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+      mkdir -p volumes/master/etc/salt/pki
+      mkdir -p volumes/master/var/cache/salt
+      mkdir -p volumes/master/var/logs/salt
+    #+END_SRC
+
+    #+RESULTS:
+
+    These directories are not controlled by the source control. 
+    They are only needed to make sure the infor stored there is persisted
+
 
 *** build the salt master
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
       docker build -t vercapi/salt_master .
       #+END_SRC
-      
-      #+RESULTS:
-      Sending build context to Docker daemon 2.048 kBSending build context to Docker daemon 2.048 kB
-      Step 1 : FROM debian:jessie
-      ---> 91bac885982d
-      Step 2 : RUN apt-get update && apt-get install -y wget
-      ---> Using cache
-      ---> 2fda7ad65f9d
-      Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
-      ---> Using cache
-      ---> 7b42cadccb6f
-      Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
-      ---> Using cache
-      ---> a13b8e49d623
-      Step 5 : RUN apt-get update && apt-get install -y salt-master
-      ---> Using cache
-      ---> 740e7725090a
-      Step 6 : EXPOSE 4505 4506
-      ---> Using cache
-      ---> 1ee7f675dece
-      Step 7 : CMD salt-master
-      ---> Using cache
-      ---> 044a47aeba10
-      Successfully built 044a47aeba10
-
-*** Starting the saltmaster manually
     
+      #+RESULTS:
+      Sending build context to Docker daemon  2.56 kBSending build context to Docker daemon  2.56 kB
+      Step 1 : FROM debian:jessie
+       ---> 91bac885982d
+      Step 2 : RUN apt-get update && apt-get install -y wget
+       ---> Using cache
+       ---> 2fda7ad65f9d
+      Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+       ---> Using cache
+       ---> 7b42cadccb6f
+      Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+       ---> Using cache
+       ---> a13b8e49d623
+      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt']
+       ---> Using cache
+       ---> 05f369ace767
+      Step 6 : RUN apt-get update && apt-get install -y salt-master
+       ---> Using cache
+       ---> 68522807cf86
+      Step 7 : EXPOSE 4505 4506
+       ---> Using cache
+       ---> ef03da46b8d0
+      Step 8 : CMD salt-master
+       ---> Using cache
+       ---> 2cc153c12a64
+      Successfully built 2cc153c12a64
+
+*** TODO Starting the saltmaster manually
+    #+RESULTS:
+
     Start as daemon
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
-      docker run -id -h sorano.salt -p 4505:4505 -p 4506:4506 --name saltmaster vercapi/salt_master
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+      docker run -id -h sorano.salt \
+      -p 4505:4505 -p 4506:4506 \
+      --name saltmaster \
+      -v /home/sorano/soranoProject/volumes/master/etc/salt/pki:/etc/salt/pki \
+      -v /home/sorano/soranoProject/volumes/master/var/cache/salt:/var/cache/salt \
+      -v /home/sorano/soranoProject/volumes/master/var/logs/salt:/var/logs/salt \
+      -v /home/sorano/soranoProject/saltstack/master:/etc/salt/master.d \
+      -v /home/sorano/soranoProject/saltstack/salt:/srv/salt \
+      vercapi/salt_master
     #+END_SRC
 
     #+RESULTS:
-    : 886e92a46d469a7c905679670943e70b6594723e7220124bf15f7653eacf6806
-    
+    : f29da3b5f45b4805ab2d77391f197401ad6ae062bb62721848d66749502efb18
+
     Open connection to salt master to see if it is running
     #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
     nc -v 127.0.0.1 4506 
@@ -69,7 +93,7 @@
 
     Manually stop the maching
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
-    docker stop saltmaster
+    docker stop saltmaster && docker rm saltmaster
     #+END_SRC
 
     Attach to running machine
@@ -89,7 +113,18 @@
     #+RESULTS:
 
     Start the service manually
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
-    systemclt start saltmaster
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/ :results raw
+    systemctl restart saltmaster
+    systemctl status saltmaster
     #+END_SRC
 
+    #+RESULTS:
+    [1;32m●[0m saltmaster.service - Saltmaster for Sorano
+       Loaded: loaded (/etc/systemd/system/saltmaster.service; enabled)
+       Active: [1;32mactive (running)[0m since Sun 2015-11-29 22:44:15 CET; 7ms ago
+      Process: 5715 ExecStop=/usr/bin/docker stop saltmaster (code=exited, status=0/SUCCESS)
+     Main PID: 5828 (docker)
+       CGroup: /system.slice/saltmaster.service
+               └─5828 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p ...
+
+* TODO Backup
