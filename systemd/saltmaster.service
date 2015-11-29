@@ -1,0 +1,12 @@
+[Unit]
+Description=Saltmaster for Sorano
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p 4506:4506 --name saltmaster vercapi/salt_master
+ExecStop=/usr/bin/docker stop saltmaster
+
+[Install]
+WantedBy=local.target

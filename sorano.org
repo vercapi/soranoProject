@@ -77,4 +77,19 @@
     docker exec -it saltmaster bash
     #+END_SRC
 
-*** TODO Set up automatic start
+*** Set up automatic start
+
+    Copy the file in place, reload configuration and enable the service
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/systemd
+      cp saltmaster.service /etc/systemd/system
+      systemctl daemon-reload
+      systemctl enable saltmaster
+    #+END_SRC
+
+    #+RESULTS:
+
+    Start the service manually
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    systemclt start saltmaster
+    #+END_SRC
+
