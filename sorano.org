@@ -1,6 +1,5 @@
 #+TITLE: Sorano Project
 
-
 * Setup
 ** TODO One step install script
 ** Install docker on sorano.home
@@ -18,10 +17,10 @@
 ** Setup salt master docker
    
    Set up dependencies for salt master docker to run
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
-      mkdir -p volumes/master/etc/salt/pki
-      mkdir -p volumes/master/var/cache/salt
-      mkdir -p volumes/master/var/logs/salt
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/srv
+      mkdir -p /srv/docker/volumes/saltmaster/etc/salt/pki
+      mkdir -p /srv/docker/volumes/saltmaster/var/cache/salt
+      mkdir -p /srv/docker/volumes/saltmaster/var/logs/salt
     #+END_SRC
 
     #+RESULTS:
@@ -62,18 +61,25 @@
        ---> 2cc153c12a64
       Successfully built 2cc153c12a64
 
-*** TODO Starting the saltmaster manually
+*** Starting the saltmaster manually
+
+
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|docker:saltmasterB:/etc
+    ls /etc/salt/master
+    #+END_SRC
+
     #+RESULTS:
+    : /etc/salt/master
 
     Start as daemon
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
       docker run -id -h sorano.salt \
       -p 4505:4505 -p 4506:4506 \
       --name saltmaster \
-      -v /home/sorano/soranoProject/volumes/master/etc/salt/pki:/etc/salt/pki \
-      -v /home/sorano/soranoProject/volumes/master/var/cache/salt:/var/cache/salt \
-      -v /home/sorano/soranoProject/volumes/master/var/logs/salt:/var/logs/salt \
-      -v /home/sorano/soranoProject/saltstack/master:/etc/salt/master.d \
+      -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki \
+      -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt \
+      -v /srv/docker/volumes/saltmaster/var/logs/salt:/var/logs/salt \
+      -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d \
       -v /home/sorano/soranoProject/saltstack/salt:/srv/salt \
       vercapi/salt_master
     #+END_SRC
