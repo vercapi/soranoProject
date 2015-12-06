@@ -203,12 +203,15 @@
     salt-key -L
     #+END_SRC
 
-    #+RESULTS:
+    Check the actual key of the minion on the master
+    salt-key -f <minion>
 
     Accept all keys
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2|docker:saltmaster:/etc/salt
     salt-key -A
     #+END_SRC
 
-    
+    Check the actual key of the minion on the minion
+    salt-call key.finger --local
+
 * TODO Backup
