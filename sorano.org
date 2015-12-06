@@ -133,4 +133,82 @@
        CGroup: /system.slice/saltmaster.service
                └─5828 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p ...
 
+** Base minion
+
+*** Build the minion
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/debian_minion :results raw
+    docker build -t vercapi/debian_minion .
+    #+END_SRC
+
+    #+RESULTS:
+    Sending build context to Docker daemon 3.584 kBSending build context to Docker daemon 3.584 kB
+    Step 1 : FROM debian:jessie
+     ---> 91bac885982d
+    Step 2 : RUN apt-get update && apt-get install -y wget
+     ---> Using cache
+     ---> 2fda7ad65f9d
+    Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+     ---> Using cache
+     ---> 7b42cadccb6f
+    Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+     ---> Using cache
+     ---> a13b8e49d623
+    Step 5 : RUN apt-get update && apt-get install -y salt-minion
+     ---> Using cache
+     ---> b66e3cfd3379
+    Step 6 : ADD ./minion /etc/salt/minion
+     ---> Using cache
+     ---> ed217627d9e9
+    Step 7 : VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
+     ---> Using cache
+     ---> 70cf8a894c97
+    Step 8 : CMD /usr/bin/salt-minion
+     ---> Running in 0a75cfc6401c
+     ---> 6e47fe99fd16
+    Removing intermediate container 0a75cfc6401c
+    Successfully built 6e47fe99fd16
+
+    
+    
+
+*** Running the minion manually
+    This only needs to be run to test. This image is intended as a base image
+    
+    Start as daemon, after creating the needed directories.
+    Directories will not be re-created if they already exist.
+    #+NAME: start_minion_docker
+    #+HEADER: :var minion_dir='salt_minion'
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+      mkdir -p /home/sorano/soranoProject/saltstack/$minion_dir/etc/salt/minion.d
+      mkdir -p /srv/docker/volumes/$minion_dir/etc/salt/pki
+      docker run -id -h minion.sorano \
+             --name saltminion \
+             -v /home/sorano/soranoProject/saltstack/$minion_dir:/etc/salt/minion.d \
+             -v /srv/docker/volumes/$minion_dir/etc/salt/pki:/etc/salt/pki \
+             vercapi/debian_minion
+    #+END_SRC
+
+    #+RESULTS: start_minion_docker
+    : 0aa1781a0d9bc314ec38f33b1cfdc7322d297c2cdbe7de4c36ede30283f9132f
+
+    Attach to running machine
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+      docker exec -it saltminion bash
+    #+END_SRC
+
+*** Register minion with master
+    
+    Check for the keys
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2|docker:saltmaster:/etc/salt
+    salt-key -L
+    #+END_SRC
+
+    #+RESULTS:
+
+    Accept all keys
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2|docker:saltmaster:/etc/salt
+    salt-key -A
+    #+END_SRC
+
+    
 * TODO Backup
