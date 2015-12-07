@@ -30,12 +30,19 @@
 
 
 *** build the salt master
+  
+      Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
+      It should leave no traces.
+
+      #+HEADER: :var ssh_pwd='not_the_real_password'
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
+      echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
+      rm pwdfile
       #+END_SRC
     
       #+RESULTS:
-      Sending build context to Docker daemon  2.56 kBSending build context to Docker daemon  2.56 kB
+      Sending build context to Docker daemon  5.12 kBSending build context to Docker daemon  5.12 kB
       Step 1 : FROM debian:jessie
        ---> 91bac885982d
       Step 2 : RUN apt-get update && apt-get install -y wget
@@ -56,11 +63,56 @@
       Step 7 : EXPOSE 4505 4506
        ---> Using cache
        ---> ef03da46b8d0
-      Step 8 : CMD salt-master
+      Step 8 : RUN apt-get install -y openssh-server supervisor
        ---> Using cache
-       ---> 2cc153c12a64
-      Successfully built 2cc153c12a64
-
+       ---> c4418ddecf08
+      Step 9 : RUN mkdir -p /var/run/sshd
+       ---> Using cache
+       ---> d6b75061dc3a
+      Step 10 : COPY pwdfile /etc/pwdfile
+       ---> 02feca8825de
+      Removing intermediate container 3d820f071163
+      Step 11 : RUN echo root:`cat /etc/pwdfile` | chpasswd
+       ---> Running in 44635cef0c5c
+       ---> d83cf3f76b81
+      Removing intermediate container 44635cef0c5c
+      Step 12 : RUN rm /etc/pwdfile
+       ---> Running in 0a5bf601399d
+       ---> 55c018b9f168
+      Removing intermediate container 0a5bf601399d
+      Step 13 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+       ---> Running in 9aa28c5bf6ea
+       ---> 55a74c828046
+      Removing intermediate container 9aa28c5bf6ea
+      Step 14 : ENV NOTVISIBLE "in users profile"
+       ---> Running in 331bfaf3ae35
+       ---> 9177e2bdbbed
+      Removing intermediate container 331bfaf3ae35
+      Step 15 : RUN echo "export VISIBLE=now" >> /etc/profile
+       ---> Running in 89c65a6d412b
+       ---> 4dd43d302f16
+      Removing intermediate container 89c65a6d412b
+      Step 16 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+       ---> Running in 75b1ec6bc342
+       ---> 91c3b4d0d8ce
+      Removing intermediate container 75b1ec6bc342
+      Step 17 : EXPOSE 22
+       ---> Running in 194e2b721772
+       ---> 3babb298e8a4
+      Removing intermediate container 194e2b721772
+      Step 18 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+       ---> 71785a160087
+      Removing intermediate container 86d623f1e995
+      Step 19 : RUN mkdir -p /var/log/supervisor
+       ---> Running in 299646181ad7
+       ---> e0113011f2a2
+      Removing intermediate container 299646181ad7
+      Step 20 : CMD /usr/bin/supervisord
+       ---> Running in 1b01a25552da
+       ---> 1906f43b03a3
+      Removing intermediate container 1b01a25552da
+      Successfully built 1906f43b03a3
+                  
 *** Starting the saltmaster manually
 
 
@@ -74,7 +126,7 @@
     Start as daemon
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
       docker run -id -h sorano.salt \
-      -p 4505:4505 -p 4506:4506 \
+      -p 4505:4505 -p 4506:4506 -p 2222:22 \
       --name saltmaster \
       -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki \
       -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt \
@@ -85,7 +137,7 @@
     #+END_SRC
 
     #+RESULTS:
-    : f29da3b5f45b4805ab2d77391f197401ad6ae062bb62721848d66749502efb18
+    : 96a7dcfcc2b9471450660640d43f376e25cca3f5ed55c361de46c1f9f1017b2e
 
     Open connection to salt master to see if it is running
     #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
