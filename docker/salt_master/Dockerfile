@@ -17,15 +17,20 @@ VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.
 # Install salt master
 RUN apt-get update && apt-get install -y salt-master
 
+# Write master cong
+COPY master /etc/salt/master
+
 # Configure ports for salt
 EXPOSE 4505 4506
 
 # Install and configure sshd
 RUN apt-get install -y openssh-server supervisor
 RUN mkdir -p /var/run/sshd
-COPY pwdfile /etc/pwdfile #get the password
+#get the password
+COPY pwdfile /etc/pwdfile 
 RUN echo root:`cat /etc/pwdfile` | chpasswd
-RUN rm /etc/pwdfile #remove the password
+#remove the password
+RUN rm /etc/pwdfile 
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile

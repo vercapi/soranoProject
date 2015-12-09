@@ -1,0 +1,3 @@
+base:
+  'sorano.home':
+    - minion

@@ -1,7 +1,9 @@
 #+TITLE: Sorano Project
 
 * Setup
+
 ** TODO One step install script
+
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -13,6 +15,7 @@
      apt-get install docker-engine
      systemctl enable docker
    #+END_SRC
+
 
 ** Setup salt master docker
    
@@ -34,7 +37,7 @@
       Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
       It should leave no traces.
 
-      #+HEADER: :var ssh_pwd='not_the_real_password'
+      #+HEADER: :var ssh_pwd='not-real'
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
@@ -42,7 +45,7 @@
       #+END_SRC
     
       #+RESULTS:
-      Sending build context to Docker daemon  5.12 kBSending build context to Docker daemon  5.12 kB
+      Sending build context to Docker daemon 37.38 kBSending build context to Docker daemon 37.38 kB
       Step 1 : FROM debian:jessie
        ---> 91bac885982d
       Step 2 : RUN apt-get update && apt-get install -y wget
@@ -60,59 +63,63 @@
       Step 6 : RUN apt-get update && apt-get install -y salt-master
        ---> Using cache
        ---> 68522807cf86
-      Step 7 : EXPOSE 4505 4506
+      Step 7 : COPY master /etc/salt/master
        ---> Using cache
-       ---> ef03da46b8d0
-      Step 8 : RUN apt-get install -y openssh-server supervisor
+       ---> 8b16b5abc3e8
+      Step 8 : EXPOSE 4505 4506
        ---> Using cache
-       ---> c4418ddecf08
-      Step 9 : RUN mkdir -p /var/run/sshd
+       ---> ec4c3fc56e58
+      Step 9 : RUN apt-get install -y openssh-server supervisor
        ---> Using cache
-       ---> d6b75061dc3a
-      Step 10 : COPY pwdfile /etc/pwdfile
-       ---> 02feca8825de
-      Removing intermediate container 3d820f071163
-      Step 11 : RUN echo root:`cat /etc/pwdfile` | chpasswd
-       ---> Running in 44635cef0c5c
-       ---> d83cf3f76b81
-      Removing intermediate container 44635cef0c5c
-      Step 12 : RUN rm /etc/pwdfile
-       ---> Running in 0a5bf601399d
-       ---> 55c018b9f168
-      Removing intermediate container 0a5bf601399d
-      Step 13 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-       ---> Running in 9aa28c5bf6ea
-       ---> 55a74c828046
-      Removing intermediate container 9aa28c5bf6ea
-      Step 14 : ENV NOTVISIBLE "in users profile"
-       ---> Running in 331bfaf3ae35
-       ---> 9177e2bdbbed
-      Removing intermediate container 331bfaf3ae35
-      Step 15 : RUN echo "export VISIBLE=now" >> /etc/profile
-       ---> Running in 89c65a6d412b
-       ---> 4dd43d302f16
-      Removing intermediate container 89c65a6d412b
-      Step 16 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-       ---> Running in 75b1ec6bc342
-       ---> 91c3b4d0d8ce
-      Removing intermediate container 75b1ec6bc342
-      Step 17 : EXPOSE 22
-       ---> Running in 194e2b721772
-       ---> 3babb298e8a4
-      Removing intermediate container 194e2b721772
-      Step 18 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-       ---> 71785a160087
-      Removing intermediate container 86d623f1e995
-      Step 19 : RUN mkdir -p /var/log/supervisor
-       ---> Running in 299646181ad7
-       ---> e0113011f2a2
-      Removing intermediate container 299646181ad7
-      Step 20 : CMD /usr/bin/supervisord
-       ---> Running in 1b01a25552da
-       ---> 1906f43b03a3
-      Removing intermediate container 1b01a25552da
-      Successfully built 1906f43b03a3
-                  
+       ---> 876016465c5a
+      Step 10 : RUN mkdir -p /var/run/sshd
+       ---> Using cache
+       ---> 54f16bbe39a1
+      Step 11 : COPY pwdfile /etc/pwdfile
+       ---> 5a5e8ed5a336
+      Removing intermediate container d55081c3c474
+      Step 12 : RUN echo root:`cat /etc/pwdfile` | chpasswd
+       ---> Running in ffb1626e3ec4
+       ---> d22c6363fbb3
+      Removing intermediate container ffb1626e3ec4
+      Step 13 : RUN rm /etc/pwdfile
+       ---> Running in 98c44c7a78b0
+       ---> c5faad9f1ed3
+      Removing intermediate container 98c44c7a78b0
+      Step 14 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+       ---> Running in e1a85a758437
+       ---> 55d460bf392b
+      Removing intermediate container e1a85a758437
+      Step 15 : ENV NOTVISIBLE "in users profile"
+       ---> Running in a3700266f586
+       ---> 3ccdf8b7f34f
+      Removing intermediate container a3700266f586
+      Step 16 : RUN echo "export VISIBLE=now" >> /etc/profile
+       ---> Running in d6a5fa7012ee
+       ---> 22ac33a72841
+      Removing intermediate container d6a5fa7012ee
+      Step 17 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+       ---> Running in 4b0b1f404622
+       ---> e444871d969e
+      Removing intermediate container 4b0b1f404622
+      Step 18 : EXPOSE 22
+       ---> Running in 52bce4b3949f
+       ---> b0f1fc8c331e
+      Removing intermediate container 52bce4b3949f
+      Step 19 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+       ---> 6dfc76d30f23
+      Removing intermediate container a1283ff627ea
+      Step 20 : RUN mkdir -p /var/log/supervisor
+       ---> Running in 5f72e5c2ea74
+       ---> a1ceec42009b
+      Removing intermediate container 5f72e5c2ea74
+      Step 21 : CMD /usr/bin/supervisord
+       ---> Running in d5e0ff6c4fcc
+       ---> 021d00a780dd
+      Removing intermediate container d5e0ff6c4fcc
+      Successfully built 021d00a780dd
+      
+                              
 *** Starting the saltmaster manually
 
 
@@ -159,6 +166,7 @@
     docker exec -it saltmaster bash
     #+END_SRC
 
+
 *** Set up automatic start
 
     Copy the file in place, reload configuration and enable the service
@@ -184,6 +192,7 @@
      Main PID: 5828 (docker)
        CGroup: /system.slice/saltmaster.service
                └─5828 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p ...
+
 
 ** Base minion
 
@@ -215,13 +224,10 @@
      ---> Using cache
      ---> 70cf8a894c97
     Step 8 : CMD /usr/bin/salt-minion
-     ---> Running in 0a75cfc6401c
+     ---> Using cache
      ---> 6e47fe99fd16
-    Removing intermediate container 0a75cfc6401c
     Successfully built 6e47fe99fd16
 
-    
-    
 
 *** Running the minion manually
     This only needs to be run to test. This image is intended as a base image
@@ -229,41 +235,63 @@
     Start as daemon, after creating the needed directories.
     Directories will not be re-created if they already exist.
     #+NAME: start_minion_docker
-    #+HEADER: :var minion_dir='salt_minion'
+    #+HEADER: :var minion_dir='minion'
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
-      mkdir -p /home/sorano/soranoProject/saltstack/$minion_dir/etc/salt/minion.d
+      mkdir -p /srv/docker/volumes/$minion_dir/etc/salt/minion.d
       mkdir -p /srv/docker/volumes/$minion_dir/etc/salt/pki
       docker run -id -h minion.sorano \
              --name saltminion \
-             -v /home/sorano/soranoProject/saltstack/$minion_dir:/etc/salt/minion.d \
+             -v /srv/docker/volumes/$minion_dir/etc/salt/minion.d:/etc/salt/minion.d \
              -v /srv/docker/volumes/$minion_dir/etc/salt/pki:/etc/salt/pki \
              vercapi/debian_minion
     #+END_SRC
 
     #+RESULTS: start_minion_docker
-    : 0aa1781a0d9bc314ec38f33b1cfdc7322d297c2cdbe7de4c36ede30283f9132f
+    : e046f6e77899ba6b20c14e59168163122356c01f12ed8e5c65b6d834c60e915f
 
     Attach to running machine
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
       docker exec -it saltminion bash
     #+END_SRC
 
+
 *** Register minion with master
     
     Check for the keys
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2|docker:saltmaster:/etc/salt
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/etc/salt :results table
     salt-key -L
     #+END_SRC
 
-    Check the actual key of the minion on the master
-    salt-key -f <minion>
+    #+RESULTS:
+    | [0;1;32mAccepted           | Keys:[0;0m |
+    | [0;32msorano.home[0;0m   |              |
+    | [0;1;35mDenied             | Keys:[0;0m |
+    | [0;1;31mUnaccepted         | Keys:[0;0m |
+    | [0;31mminion.sorano[0;0m |              |
+    | [0;1;34mRejected           | Keys:[0;0m |
+
+    #+HEADER: :var minion_name='saltminion'
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/etc/salt
+    salt-key -f $minion_name
+    #+END_SRC
 
     Accept all keys
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2|docker:saltmaster:/etc/salt
-    salt-key -A
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/etc/salt
+    yes | salt-key -A
     #+END_SRC
 
     Check the actual key of the minion on the minion
+    #+BEGIN_SRC sh :dir /sudo:192.168.1.2:/root
     salt-call key.finger --local
+    #+END_SRC
 
+    Remove a key for a minion
+    #+HEADER: :var minion_name='saltminion'
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/etc/salt
+    salt-key -d $minion_name
+    #+END_SRC
+
+
+*** Start a docker minion via the master
+    
 * TODO Backup
