@@ -5,7 +5,7 @@ After=docker.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p 4506:4506 -p 2222:22 --name saltmaster -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt -v /srv/docker/volumes/saltmaster/var/logs/salt:/var/logs/salt -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d -v /home/sorano/soranoProject/saltstack/salt:/srv/salt vercapi/salt_master
+ExecStart=/usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p 4506:4506 -p 2222:22 --name saltmaster -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt -v /srv/docker/volumes/saltmaster/var/logs/salt:/var/logs/salt -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d -v /home/sorano/soranoProject/saltstack/salt:/srv/salt -v /home/sorano/soranoProject/saltstack/pillar:/srv/pillar vercapi/salt_master
 ExecStop=/usr/bin/docker stop saltmaster
 
 [Install]

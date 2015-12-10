@@ -33,6 +33,7 @@
     They are only needed to make sure the infor stored there is persisted
 
 
+
 *** build the salt master
   
       Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
@@ -43,8 +44,8 @@
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
-      #+END_SRC
-    
+      #+END_SRC  
+
       #+RESULTS:
       Sending build context to Docker daemon 37.38 kBSending build context to Docker daemon 37.38 kB
       Step 1 : FROM debian:jessie
@@ -58,68 +59,59 @@
       Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
        ---> Using cache
        ---> a13b8e49d623
-      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt']
+      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar']
        ---> Using cache
-       ---> 05f369ace767
+       ---> 5ef6970d68dc
       Step 6 : RUN apt-get update && apt-get install -y salt-master
        ---> Using cache
-       ---> 68522807cf86
+       ---> 9b4abc205588
       Step 7 : COPY master /etc/salt/master
        ---> Using cache
-       ---> 8b16b5abc3e8
+       ---> 7b68216e39c5
       Step 8 : EXPOSE 4505 4506
        ---> Using cache
-       ---> ec4c3fc56e58
+       ---> f5d868719586
       Step 9 : RUN apt-get install -y openssh-server supervisor
        ---> Using cache
-       ---> 876016465c5a
+       ---> fdfbd18622af
       Step 10 : RUN mkdir -p /var/run/sshd
        ---> Using cache
-       ---> 54f16bbe39a1
+       ---> 36a193a4069e
       Step 11 : COPY pwdfile /etc/pwdfile
-       ---> 5a5e8ed5a336
-      Removing intermediate container d55081c3c474
+       ---> Using cache
+       ---> 598de7287e09
       Step 12 : RUN echo root:`cat /etc/pwdfile` | chpasswd
-       ---> Running in ffb1626e3ec4
-       ---> d22c6363fbb3
-      Removing intermediate container ffb1626e3ec4
+       ---> Using cache
+       ---> 28b75deb2cca
       Step 13 : RUN rm /etc/pwdfile
-       ---> Running in 98c44c7a78b0
-       ---> c5faad9f1ed3
-      Removing intermediate container 98c44c7a78b0
+       ---> Using cache
+       ---> 64c410c1fff2
       Step 14 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-       ---> Running in e1a85a758437
-       ---> 55d460bf392b
-      Removing intermediate container e1a85a758437
+       ---> Using cache
+       ---> 990bf2fbeffa
       Step 15 : ENV NOTVISIBLE "in users profile"
-       ---> Running in a3700266f586
-       ---> 3ccdf8b7f34f
-      Removing intermediate container a3700266f586
+       ---> Using cache
+       ---> 12c3ff540538
       Step 16 : RUN echo "export VISIBLE=now" >> /etc/profile
-       ---> Running in d6a5fa7012ee
-       ---> 22ac33a72841
-      Removing intermediate container d6a5fa7012ee
+       ---> Using cache
+       ---> 1830b4b208df
       Step 17 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-       ---> Running in 4b0b1f404622
-       ---> e444871d969e
-      Removing intermediate container 4b0b1f404622
+       ---> Using cache
+       ---> 61f7117ba640
       Step 18 : EXPOSE 22
-       ---> Running in 52bce4b3949f
-       ---> b0f1fc8c331e
-      Removing intermediate container 52bce4b3949f
+       ---> Using cache
+       ---> 7c0f74e94ef4
       Step 19 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-       ---> 6dfc76d30f23
-      Removing intermediate container a1283ff627ea
+       ---> Using cache
+       ---> 3230f300b4b7
       Step 20 : RUN mkdir -p /var/log/supervisor
-       ---> Running in 5f72e5c2ea74
-       ---> a1ceec42009b
-      Removing intermediate container 5f72e5c2ea74
+       ---> Using cache
+       ---> d242358b8743
       Step 21 : CMD /usr/bin/supervisord
-       ---> Running in d5e0ff6c4fcc
-       ---> 021d00a780dd
-      Removing intermediate container d5e0ff6c4fcc
-      Successfully built 021d00a780dd
-      
+       ---> Using cache
+       ---> 339227c7767e
+      Successfully built 339227c7767e
+
                               
 *** Starting the saltmaster manually
 
@@ -134,14 +126,15 @@
     Start as daemon
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
       docker run -id -h sorano.salt \
-      -p 4505:4505 -p 4506:4506 -p 2222:22 \
-      --name saltmaster \
-      -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki \
-      -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt \
-      -v /srv/docker/volumes/saltmaster/var/logs/salt:/var/logs/salt \
-      -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d \
-      -v /home/sorano/soranoProject/saltstack/salt:/srv/salt \
-      vercapi/salt_master
+             -p 4505:4505 -p 4506:4506 -p 2222:22 \
+             --name saltmaster \
+             -v /srv/docker/volumes/saltmaster/etc/salt/pki:/etc/salt/pki \
+             -v /srv/docker/volumes/saltmaster/var/cache/salt:/var/cache/salt \
+             -v /srv/docker/volumes/saltmaster/var/logs/salt:/var/logs/salt \
+             -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d \
+             -v /home/sorano/soranoProject/saltstack/salt:/srv/salt \
+             -v /home/sorano/soranoProject/saltstack/pillar:/srv/pillar \
+             vercapi/salt_master
     #+END_SRC
 
     #+RESULTS:
@@ -166,6 +159,7 @@
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
     docker exec -it saltmaster bash
     #+END_SRC
+
 
 
 *** Set up automatic start
@@ -321,7 +315,17 @@
     #+END_SRC
 
 
-*** Start a docker minion via the master
-    
+* Query saltstack
+
+** Pillar
+   
+   show all pillars
+   #+BEGIN_SRC bash :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   salt '*' pillar.items
+   #+END_SRC   
+
+   #+RESULTS:
+   
+   
 
 * TODO Backup
