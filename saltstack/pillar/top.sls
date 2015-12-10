@@ -1,3 +1,3 @@
 base:
-  '*':
-    - data
+  'sorano.home':
+    - docker_minions
