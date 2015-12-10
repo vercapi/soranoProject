@@ -315,17 +315,19 @@
     #+END_SRC
 
 
-* Query saltstack
+* Manage saltstack
 
 ** Pillar
    
-   show all pillars
-   #+BEGIN_SRC bash :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   Show all pillars from all minions
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
    salt '*' pillar.items
    #+END_SRC   
 
-   #+RESULTS:
-   
+   Push the latest pillar data to the minions
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   salt '*' saltutil.refresh_pillar
+   #+END_SRC
    
 
 * TODO Backup
