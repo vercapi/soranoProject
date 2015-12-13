@@ -1,6 +1,6 @@
 #+TITLE: Sorano Project
 
-* Setup
+* Setup Saltstack
 
 ** TODO One step install script
 
@@ -111,7 +111,7 @@
        ---> Using cache
        ---> 339227c7767e
       Successfully built 339227c7767e
-
+      
                               
 *** Starting the saltmaster manually
 
@@ -348,5 +348,39 @@
    salt '*' saltutil.refresh_pillar
    #+END_SRC
    
+
+* Containers
+
+** Plex Media server
+
+*** Build docker
+    
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server :results silent
+      docker build -t vercapi/media_server .
+    #+END_SRC
+
+
+*** Run docker manually
+    
+    Setting the library directory with the correct permissions.
+    Docker can't mount with specific permissions so you need to set the uid specifically
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+      chown -R 1101:1101 /srv/docker/volumes/media.sorano/Library
+    #+END_SRC
+
+    Used for testing change -d to to -t for seeing output
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+      docker run -id -h media.sorano \
+             -p 1900:1900/udp -p 3005:3005 -p 5353:5353/udp -p 8324:8324 -p 32410:32410/udp -p 32412:32412/udp -p 34213:34213/udp -p 34214:34214/udp -p 32469:32469 -p 32400:32400 \
+             -v /srv/docker/volumes/media.sorano/Library:/home/plex/Library/ \
+             -v /public/music:/media/music \
+             -v /public/movie:/media/movies \
+             --name  media.sorano \
+             vercapi/media_server
+    #+END_SRC
+
+    #+RESULTS:
+    : f65353448a2d5e6a569f9428937c055b9d3dd98dcaa3cc3ef2c77dc92a535054
+
 
 * TODO Backup
