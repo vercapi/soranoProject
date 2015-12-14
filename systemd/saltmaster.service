@@ -9,4 +9,4 @@ ExecStart=/usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p 4506:4506 -
 ExecStop=/usr/bin/docker stop saltmaster
 
 [Install]
-WantedBy=local.target
+WantedBy=multi-user.target
