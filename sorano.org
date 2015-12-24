@@ -34,86 +34,93 @@
     They are only needed to make sure the infor stored there is persisted
 
 
-
 *** build the salt master
   
       Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
       It should leave no traces.
 
-      #+HEADER: :var ssh_pwd='not-real'
+      #+HEADER: :var ssh_pwd='not_real'
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
       #+END_SRC  
 
-      #+RESULTS:
-      Sending build context to Docker daemon 37.38 kBSending build context to Docker daemon 37.38 kB
+      #+RESULTS:              
+      Sending build context to Docker daemon 40.96 kBSending build context to Docker daemon 40.96 kB
       Step 1 : FROM debian:jessie
-       ---> 91bac885982d
+       ---> 23cb15b0fcec
       Step 2 : RUN apt-get update && apt-get install -y wget
        ---> Using cache
-       ---> 2fda7ad65f9d
+       ---> 55d283517c48
       Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
        ---> Using cache
-       ---> 7b42cadccb6f
+       ---> 6cc4d0f38d83
       Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
        ---> Using cache
-       ---> a13b8e49d623
-      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar']
+       ---> 90d5f7cd5b9c
+      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar', '/etc/salt/minion.d']
        ---> Using cache
-       ---> 5ef6970d68dc
+       ---> 5fe3e3ee0cf2
       Step 6 : RUN apt-get update && apt-get install -y salt-master
        ---> Using cache
-       ---> 9b4abc205588
-      Step 7 : COPY master /etc/salt/master
+       ---> 26e910d78093
+      Step 7 : RUN apt-get update && apt-get install -y salt-minion
        ---> Using cache
-       ---> 7b68216e39c5
-      Step 8 : EXPOSE 4505 4506
+       ---> 8b3afb5792d9
+      Step 8 : ADD ./minion /etc/salt/minion
        ---> Using cache
-       ---> f5d868719586
-      Step 9 : RUN apt-get install -y openssh-server supervisor
+       ---> 97ffc3e78f1b
+      Step 9 : COPY master /etc/salt/master
        ---> Using cache
-       ---> fdfbd18622af
-      Step 10 : RUN mkdir -p /var/run/sshd
+       ---> 85c6fc82a47f
+      Step 10 : EXPOSE 4505 4506
        ---> Using cache
-       ---> 36a193a4069e
-      Step 11 : COPY pwdfile /etc/pwdfile
+       ---> 058ee85038b1
+      Step 11 : RUN apt-get install -y openssh-server supervisor
        ---> Using cache
-       ---> 598de7287e09
-      Step 12 : RUN echo root:`cat /etc/pwdfile` | chpasswd
+       ---> 5e5e57a5ad6a
+      Step 12 : RUN mkdir -p /var/run/sshd
        ---> Using cache
-       ---> 28b75deb2cca
-      Step 13 : RUN rm /etc/pwdfile
+       ---> 6ac361f166b8
+      Step 13 : COPY pwdfile /etc/pwdfile
        ---> Using cache
-       ---> 64c410c1fff2
-      Step 14 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+       ---> 8ff37065f01a
+      Step 14 : RUN echo root:`cat /etc/pwdfile` | chpasswd
        ---> Using cache
-       ---> 990bf2fbeffa
-      Step 15 : ENV NOTVISIBLE "in users profile"
+       ---> 1c82107aed27
+      Step 15 : RUN rm /etc/pwdfile
        ---> Using cache
-       ---> 12c3ff540538
-      Step 16 : RUN echo "export VISIBLE=now" >> /etc/profile
+       ---> 27780ca583c6
+      Step 16 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
        ---> Using cache
-       ---> 1830b4b208df
-      Step 17 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+       ---> 2cd7fb2f3a9c
+      Step 17 : ENV NOTVISIBLE "in users profile"
        ---> Using cache
-       ---> 61f7117ba640
-      Step 18 : EXPOSE 22
+       ---> 1466ad0677d6
+      Step 18 : RUN echo "export VISIBLE=now" >> /etc/profile
        ---> Using cache
-       ---> 7c0f74e94ef4
-      Step 19 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+       ---> 3a231f83fce6
+      Step 19 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
        ---> Using cache
-       ---> 3230f300b4b7
-      Step 20 : RUN mkdir -p /var/log/supervisor
+       ---> 66d2704e6d21
+      Step 20 : EXPOSE 22
        ---> Using cache
-       ---> d242358b8743
-      Step 21 : CMD /usr/bin/supervisord
-       ---> Using cache
-       ---> 339227c7767e
-      Successfully built 339227c7767e
-      
-                              
+       ---> 9a6388420fc4
+      Step 21 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+       ---> 00a542ecabc2
+      Removing intermediate container 8a012da1087f
+      Step 22 : RUN mkdir -p /var/log/supervisor
+       ---> Running in c5f885c54a1b
+       ---> e06008841295
+      Removing intermediate container c5f885c54a1b
+      Step 23 : CMD /usr/bin/supervisord
+       ---> Running in 9a60765f65d1
+       ---> 2d83eef75170
+      Removing intermediate container 9a60765f65d1
+      Successfully built 2d83eef75170
+
+
 *** Starting the saltmaster manually
 
 
@@ -327,7 +334,7 @@
 
 
 * Manage saltstack
-
+  
 ** Pillar
    
    Show all pillars from all minions
@@ -351,6 +358,33 @@
    #+END_SRC
    
 
+** Minions
+
+   Check running minions
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+    salt-run manage.status
+   #+END_SRC
+
+   #+RESULTS:
+   [0;36mdown[0;0m:
+   [0;36mup[0;0m:
+       [0;32m- sorano.home[0;0m
+       [0;32m- sorano.salt[0;0m
+
+   Check statusof minion keys
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   salt-key -L
+   #+END_SRC
+
+   #+RESULTS:
+   [0;1;32mAccepted Keys:[0;0m
+   [0;32msorano.home[0;0m
+   [0;32msorano.salt[0;0m
+   [0;1;35mDenied Keys:[0;0m
+   [0;1;31mUnaccepted Keys:[0;0m
+   [0;1;34mRejected Keys:[0;0m
+
+   
 * Containers
 
 ** Plex Media server
@@ -384,5 +418,15 @@
     #+RESULTS:
     : f65353448a2d5e6a569f9428937c055b9d3dd98dcaa3cc3ef2c77dc92a535054
 
+
+*** Saltstack config
+
+    [[file:saltstack/salt/media_server.sls][salt state]] configuration file
+    
+    Run the salt state
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+    salt 'sorano.home' state.apply media_server
+    #+END_SRC
+    
 
 * TODO Backup

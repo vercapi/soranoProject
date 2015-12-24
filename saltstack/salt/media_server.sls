@@ -1,0 +1,22 @@
+media_server:
+  dockerng.running:
+    - image: vercapi/media_server
+    - name: media.sorano
+    - hostname: media.sorano
+    - binds:
+      - /srv/docker/volumes/media.sorano/etc/salt/minion.d:/etc/salt/minion.d:rw
+      - /srv/docker/volumes/media.sorano/etc/salt/pki/:/etc/salt/pki:rw
+      - /srv/docker/volumes/media.sorano/Library:/home/plex/Library:rw
+      - /public/music:/media/music:rw
+      - /public/movie:/media/movies:rw
+    - port_bindings:
+      - 1900:1900/udp
+      - 3005:3005
+      - 5353:5353/udp
+      - 8324:8324
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 34213:34213/udp
+      - 34214:34214/udp
+      - 32469:32469
+      - 32400:32400
