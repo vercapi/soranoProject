@@ -6,7 +6,7 @@ RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub
 RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
 
 #Volumes for persistent data
-VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar']
+VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar', '/etc/salt/minion.d']
 
 # /etc/salt/pki      - This holds the Salt Minion authentication keys
 # /var/cache/salt    - Job and Minion data cache
@@ -16,6 +16,10 @@ VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.
 
 # Install salt master
 RUN apt-get update && apt-get install -y salt-master
+
+# Install and configure salt minion
+RUN apt-get update && apt-get install -y salt-minion
+ADD ./minion /etc/salt/minion
 
 # Write master cong
 COPY master /etc/salt/master

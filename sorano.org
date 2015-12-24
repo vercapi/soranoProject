@@ -25,6 +25,7 @@
       mkdir -p /srv/docker/volumes/saltmaster/etc/salt/pki
       mkdir -p /srv/docker/volumes/saltmaster/var/cache/salt
       mkdir -p /srv/docker/volumes/saltmaster/var/logs/salt
+      mkdir -p /srv/docker/volumes/saltmaster/etc/salt/minion.d
     #+END_SRC
 
     #+RESULTS:
@@ -134,6 +135,7 @@
              -v /home/sorano/soranoProject/saltstack/master.d:/etc/salt/master.d \
              -v /home/sorano/soranoProject/saltstack/salt:/srv/salt \
              -v /home/sorano/soranoProject/saltstack/pillar:/srv/pillar \
+             -v /srv/docker/volumes/saltmaster/etc/salt/minion.d \
              vercapi/salt_master
     #+END_SRC
 
