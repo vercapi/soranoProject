@@ -3,7 +3,7 @@ FROM vercapi/debian_minion
 #Prepare user
 RUN mkdir -p /home/plex
 RUN groupadd -r plex -g 1101 
-RUN useradd -u 1101 -r -g plex -d /home/plex -s /sbin/nologin -c "Docker image plex user" plex
+RUN useradd -u 1101 -r -g plex -d /home/plex -s /bin/bash -c "Docker image plex user" plex
 RUN chown -R plex:plex /home/plex
 
 # Install media rpepos
@@ -30,6 +30,14 @@ EXPOSE 1900 3005 5353 8324 32410 32412 34213 34214 32469 32400
 
 VOLUME ['/home/plex/Library/', '/movies', '/music' '/pictures']
 
-USER plex
+# Configure supervisord
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN mkdir -p /var/log/supervisor
 
-CMD rm /home/plex/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid && cd /usr/lib/plexmediaserver && ./start.sh
+# Shel script to run plex
+COPY plex_start.sh /home/plex/plex_start.sh
+RUN chown plex /home/plex/plex_start.sh
+RUN chmod u+x /home/plex/plex_start.sh
+
+# Run supervisord
+CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
