@@ -206,32 +206,6 @@
     #+END_SRC
 
     #+RESULTS:
-    Sending build context to Docker daemon 3.584 kBSending build context to Docker daemon 3.584 kB
-    Step 1 : FROM debian:jessie
-     ---> 91bac885982d
-    Step 2 : RUN apt-get update && apt-get install -y wget
-     ---> Using cache
-     ---> 2fda7ad65f9d
-    Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
-     ---> Using cache
-     ---> 7b42cadccb6f
-    Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
-     ---> Using cache
-     ---> a13b8e49d623
-    Step 5 : RUN apt-get update && apt-get install -y salt-minion
-     ---> Using cache
-     ---> b66e3cfd3379
-    Step 6 : ADD ./minion /etc/salt/minion
-     ---> Using cache
-     ---> ed217627d9e9
-    Step 7 : VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
-     ---> Using cache
-     ---> 70cf8a894c97
-    Step 8 : CMD /usr/bin/salt-minion
-     ---> Using cache
-     ---> 6e47fe99fd16
-    Successfully built 6e47fe99fd16
-
 
 *** Running the minion manually
 
@@ -384,16 +358,26 @@
    [0;1;31mUnaccepted Keys:[0;0m
    [0;1;34mRejected Keys:[0;0m
 
-   
+
+* Manage docker
+
+  Remove unnamed dockers
+  #+BEGIN_SR :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server :results
+    docker images | grep "^<none>" | awk '{print $3}' xargs docker rmi
+  #+END_SRC
+
+
 * Containers
 
 ** Plex Media server
 
 *** Build docker
     
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server :results silent
+    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server
       docker build -t vercapi/media_server .
     #+END_SRC
+
+    #+RESULTS:
 
 
 *** Run docker manually
@@ -427,6 +411,7 @@
     #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
     salt 'sorano.home' state.apply media_server
     #+END_SRC
-    
 
+    #+RESULTS:
+    
 * TODO Backup
