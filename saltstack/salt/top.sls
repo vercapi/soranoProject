@@ -1,3 +1,3 @@
 base:
   'sorano.home':
-    - minion
+    - media_server

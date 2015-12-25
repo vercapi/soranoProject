@@ -1,3 +1,3 @@
 base:
   'sorano.home':
-    - docker_minions
+    - home_docker_minions
