@@ -206,6 +206,34 @@
     #+END_SRC
 
     #+RESULTS:
+    Sending build context to Docker daemon 3.584 kBSending build context to Docker daemon 3.584 kB
+    Step 1 : FROM debian:jessie
+     ---> 23cb15b0fcec
+    Step 2 : RUN apt-get update && apt-get install -y wget
+     ---> Using cache
+     ---> 55d283517c48
+    Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+     ---> Using cache
+     ---> 6cc4d0f38d83
+    Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+     ---> Using cache
+     ---> 90d5f7cd5b9c
+    Step 5 : RUN apt-get update && apt-get install -y salt-minion supervisor
+     ---> Using cache
+     ---> 662db755799f
+    Step 6 : ADD ./minion /etc/salt/minion
+     ---> 56cc54096e64
+    Removing intermediate container 8528d5b1b7b2
+    Step 7 : VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
+     ---> Running in be8dcfbba7b0
+     ---> 5c25085d7038
+    Removing intermediate container be8dcfbba7b0
+    Step 8 : CMD /usr/bin/salt-minion
+     ---> Running in 3b361ae3a7d2
+     ---> 8cbd0f619d49
+    Removing intermediate container 3b361ae3a7d2
+    Successfully built 8cbd0f619d49
+
 
 *** Running the minion manually
 
@@ -213,8 +241,8 @@
     Preapares the local volumes
     minion_id or the hostname is needed so it can be copied to the correct directory    
     #+NAME: init_docker_minion
-    #+HEADER: :var minion='minion.sorano'
-    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :result raw
+    #+HEADER: :var minion="minion.sorano"
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results output
       KEY_NAME=preseed_key
       PUB_KEY_FILE_NAME=$KEY_NAME.pub
       PRIV_KEY_FILE_NAME=$KEY_NAME.pem
@@ -225,7 +253,9 @@
       salt-key --gen-keys=$KEY_NAME
       cp $PUB_KEY_FILE_NAME /etc/salt/pki/master/minions/$minion
 
-      salt-cp 'sorano.home' $PUB_KEY_FILE_NAME /srv/docker/volumes/$minion/etc/salt/pki/minion/minion.pub
+      echo '/srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pub'
+
+      salt-cp 'sorano.home' $PUB_KEY_FILE_NAME /srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pub
       salt-cp 'sorano.home' $PRIV_KEY_FILE_NAME /srv/docker/volumes/$minion/etc/salt/pki/minion/minion.pem
 
       finish () {
@@ -237,17 +267,24 @@
     #+END_SRC
 
     #+RESULTS: init_docker_minion
-    | [0;36msorano.home[0;0m: |                    |
-    | [0;36msorano.home[0;0m: |                    |
-    | [0;36msorano.home[0;0m: |                    |
-    | [0;32mDestination         | unavailable[0;0m |
-    | [0;36msorano.home[0;0m: |                    |
-    | [0;32mDestination         | unavailable[0;0m |
+    #+begin_example
+    [0;36msorano.home[0;0m:
+    [0;36msorano.home[0;0m:
+    /srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub
+    [0;36msorano.home[0;0m:
+        [0;36m----------[0;0m
+        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub[0;0m:
+            [0;1;33mTrue[0;0m
+    [0;36msorano.home[0;0m:
+        [0;36m----------[0;0m
+        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pem[0;0m:
+            [0;1;33mTrue[0;0m
+#+end_example
 
     Start as daemon, after creating the needed directories.
     Directories will not be re-created if they already exist.
     #+NAME: start_docker_minion
-    #+HEADER: :var minion='minion.sorano'
+    #+HEADER: :var minion="minion.sorano"
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
       docker run -id -h $minion \
              --name $minion \
@@ -255,6 +292,9 @@
              -v /srv/docker/volumes/$minion/etc/salt/pki:/etc/salt/pki \
              vercapi/debian_minion
     #+END_SRC
+
+    #+RESULTS: start_docker_minion
+    : 5e563ac222c308500b960a5ca0565c4520d15981f214b63747f7346930032339
 
     Removing a docker minion
     #+NAME: remove_docker_minion
@@ -412,6 +452,7 @@
     salt 'sorano.home' state.apply media_server
     #+END_SRC
 
-    #+RESULTS:
+**** TODO Autorun configuration
     
+
 * TODO Backup
