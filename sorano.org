@@ -4,7 +4,6 @@
 
 ** TODO One step install script
 
-
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -16,6 +15,8 @@
      apt-get install docker-engine
      systemctl enable docker
    #+END_SRC
+
+*** TODO Make sure docker has enough disk space
 
 
 ** Setup salt master docker
@@ -196,6 +197,14 @@
      Main PID: 5828 (docker)
        CGroup: /system.slice/saltmaster.service
                └─5828 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p ...
+
+
+** TODO setup a machine as saltminion
+
+   * Keep base minon file under source control
+   * Setup script to setup the minion
+     * Download and run the minion installer from saltstack
+     * Download an place the files for the minion configuration
 
 
 ** Base minion
@@ -402,7 +411,12 @@
 * Manage docker
 
   Remove unnamed dockers
-  #+BEGIN_SR :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server :results
+  #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server :results output
+    echo 'Deleting stopped containers'
+    docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker rm
+    echo 'Deleting idle containers'
+    docker ps -a | grep 'Created' | awk '{print $1}' | xargs docker rm
+    echo 'Deleting unnamed containers'
     docker images | grep "^<none>" | awk '{print $3}' xargs docker rmi
   #+END_SRC
 
@@ -418,7 +432,6 @@
     #+END_SRC
 
     #+RESULTS:
-
 
 *** Run docker manually
     
@@ -455,4 +468,30 @@
 **** TODO Autorun configuration
     
 
+* Raspberry pi
+
+** OS installation
+
+   Download and install Output files may differ
+   #+BEGIN_SRC sh
+   wget https://downloads.raspberrypi.org/raspbian_latest
+   unzip 2015-11-21-raspbian-jessie.zipap
+   dd bs=4M if=2015-11-21-raspbian-jessie.img of=/dev/mmcblk0
+   #+END_SRC
+
+   Bootstrap doesn't currently work, so installing from the official repo
+   #+BEGIN_SRC sh :dir /ssh:pi@192.168.1.250
+   sudo apt-get install salt-minion
+   #+END_SRC
+
+   Change hostname in /etc/hosts
+
+   Change following lines in the /etc/salt/minion
+   
+
 * TODO Backup
+
+  - Mount backupdrive
+  - Create new dir and symlinks
+  - rsync
+  - umount backupdrive
