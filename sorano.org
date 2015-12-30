@@ -4,6 +4,7 @@
 
 ** TODO One step install script
 
+
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -383,6 +384,16 @@
 
 ** Minions
 
+*** TODO Upgrade
+    https://docs.saltstack.com/en/latest/topics/installation/debian.html
+
+    #+BEGIN_SRC sh :dir /sshpi@192.168.1.250:/home/pi
+    wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+    
+    #+END_SRC
+
+*** State
+
    Check running minions
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
     salt-run manage.status
@@ -433,6 +444,7 @@
 
     #+RESULTS:
 
+
 *** Run docker manually
     
     Setting the library directory with the correct permissions.
@@ -472,25 +484,34 @@
 
 ** OS installation
 
-   Download and install Output files may differ
+   Installed arch linux
+   [[http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2][Installation instructions]]
+
+   login as root perform following initial tasks. To get the system updated
+   and insalled with the latest salt minion
    #+BEGIN_SRC sh
-   wget https://downloads.raspberrypi.org/raspbian_latest
-   unzip 2015-11-21-raspbian-jessie.zipap
-   dd bs=4M if=2015-11-21-raspbian-jessie.img of=/dev/mmcblk0
+   pacman -Syu
+   pacman -S salt-zmq
    #+END_SRC
-
-   Bootstrap doesn't currently work, so installing from the official repo
-   #+BEGIN_SRC sh :dir /ssh:pi@192.168.1.250
-   sudo apt-get install salt-minion
-   #+END_SRC
-
-   Change hostname in /etc/hosts
 
    Change following lines in the /etc/salt/minion
+   master: 192.168.1.2
+   startup_states: highstate
+   id: xxx.sorano
+
+   restart minion
    
+   accept key on master
+   salt-key -a livingroom.sorano
+
 
 * TODO Backup
+ 
+** Create backup state module
+   [[https://docs.saltstack.com/en/latest/ref/states/writing.html][Custom state module documentation]]
+   Execution states do the real work, start with this
 
+** Steps
   - Mount backupdrive
   - Create new dir and symlinks
   - rsync
