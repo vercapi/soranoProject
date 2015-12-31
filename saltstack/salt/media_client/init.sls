@@ -10,18 +10,23 @@ kodi:
       - omxplayer-git
       - xorg-xrefresh
       - xorg-xset
+      - chromium
 
-autologin:
-  group.present
-      
 kodi_user:
   user.present:
-    - groups:
-      - autologin
-    - require:
-      - group: autologin
+    - name: kodi
+    - shell: /bin/bash
+    - home: /var/lib/kodi
 
 kodi_service:
   service.running:
     - name: kodi
     - enable: True
+      
+# Provision zip file to install plugin
+/var/lib/kodi/plugin.video.plexbmc-4.0.0beta4.zip:
+  file.managed:
+    - source: salt://media_client/plugin.video.plexbmc-4.0.0beta4.zip
+    - user: kodi
+    - group: kodi
+    - mode: 644

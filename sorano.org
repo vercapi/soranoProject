@@ -505,6 +505,21 @@
    salt-key -a livingroom.sorano
 
 
+** Kodi
+   
+   The salt state is media_client
+
+   Install the SuperRepo for XBMC: [[https://superrepo.org/get-started/][Instructions]]
+
+*** Netflix
+
+**** TODO install Chromeium-winedevine via AUR
+
+
+*** TODO Use the Kodi user for running kodi
+
+*** TODO Check aditional settings on arch kodi wiki
+
 * TODO Backup
  
 ** Create backup state module
