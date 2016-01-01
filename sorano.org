@@ -480,9 +480,32 @@
 **** TODO Autorun configuration
     
 
-* Raspberry pi
+* Non containers
+  Software not installed as containers because it's the only functionality on the system. Or because the architecture might not be the same x86/ARM
 
-** OS installation
+** Kodi
+   
+   Guide for arch linux raspbery and x86: [[https://wiki.archlinux.org/index.php/Kodi][wiki]]
+
+   The salt state is media_client
+
+   Install the SuperRepo for XBMC: [[https://superrepo.org/get-started/][Instructions]]
+
+*** Netflix
+
+    Install netflixbmc which depends on chrome launcher.
+    This will need to use chromium instead of chrome.
+
+    For netflix to work we need the widevine [[https://aur.archlinux.org/packages/chromium-widevine/][plugin]] for chrome 
+    
+    Alternative is to install chrome from google
+    - [[https://aur.archlinux.org/packages/google-chrome/][arch]]
+    - .deb from google
+
+
+* OSs
+
+** Raspberry pi
 
    Installed arch linux
    [[http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2][Installation instructions]]
@@ -504,21 +527,6 @@
    accept key on master
    salt-key -a livingroom.sorano
 
-
-** Kodi
-   
-   The salt state is media_client
-
-   Install the SuperRepo for XBMC: [[https://superrepo.org/get-started/][Instructions]]
-
-*** Netflix
-
-**** TODO install Chromeium-winedevine via AUR
-
-
-*** TODO Use the Kodi user for running kodi
-
-*** TODO Check aditional settings on arch kodi wiki
 
 * TODO Backup
  
