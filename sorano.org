@@ -363,24 +363,39 @@
    
    Show all pillars from all minions
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
-   salt '*' pillar.items
+   salt --no-color '*' pillar.items
    #+END_SRC   
 
    #+RESULTS:
-   [0;36mminion.sorano[0;0m:
-       [0;36m----------[0;0m
-   [0;36msorano.home[0;0m:
-       [0;36m----------[0;0m
-       [0;36mdockers[0;0m:
-           [0;36m----------[0;0m
-           [0;36msaltminion[0;0m:
-               [0;32mminion[0;0m
+   sorano.salt:
+       ----------
+   sorano.home:
+       ----------
+       home_dockers:
+           ----------
+           media.sorano:
+               media_server
+   livingroom.sorano:
+       Minion did not return. [Not connected]
 
    Push the latest pillar data to the minions
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
-   salt '*' saltutil.refresh_pillar
+   salt --no-color '*' saltutil.refresh_pillar
    #+END_SRC
    
+
+** Grains
+
+   List all grains
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   salt --no-color '*' grains.ls
+   #+END_SRC
+
+   List grains and their values
+   #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+   salt --no-color 'sorano.home' grains.items
+   #+END_SRC
+
 
 ** Minions
 
@@ -545,11 +560,13 @@
 
 ** TODO Network
 
+
 * TODO Backup
  
 ** Create backup state module
    [[https://docs.saltstack.com/en/latest/ref/states/writing.html][Custom state module documentation]]
    Execution states do the real work, start with this
+
 
 ** Steps
   - Mount backupdrive
