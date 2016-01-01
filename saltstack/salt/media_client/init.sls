@@ -1,4 +1,4 @@
-# This is a configuration on Arch Linux
+# This is a configuration on Arch Linux for Raspberry
 
 kodi:
   pkg.installed:
@@ -30,3 +30,7 @@ kodi_service:
     - user: kodi
     - group: kodi
     - mode: 644
+
+# Following files are needed for the x86 install
+# - Xwrapper.config
+# - lightdm.conf
