@@ -503,7 +503,11 @@
     - .deb from google
 
 
-* OSs
+*** Raspberry vs x86
+    [[file:saltstack/salt/media_client/init.sls][saltstate]] should be changed to support both systems
+
+
+* Systems
 
 ** Raspberry pi
 
@@ -527,6 +531,19 @@
    accept key on master
    salt-key -a livingroom.sorano
 
+
+* TODO Security
+
+** TODO Users
+
+   Salt states/pillars to
+   - Maintain users on systems as required
+   - SSH only with key. Create private keys peruser distribute public keys
+   - Management of sudoers file on machines: [[https://github.com/saltstack-formulas/sudoers-formula/tree/master/sudoers][example]]
+   - DNS to manage passwords
+
+
+** TODO Network
 
 * TODO Backup
  
