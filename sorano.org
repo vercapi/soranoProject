@@ -1,9 +1,8 @@
 #+TITLE: Sorano Project
 
 * Setup Saltstack
-
+  
 ** TODO One step install script
-
 
 ** Install docker on sorano.home
    
@@ -396,7 +395,7 @@
    salt --no-color 'sorano.home' grains.items
    #+END_SRC
 
-
+   
 ** Minions
 
 *** TODO Upgrade
@@ -411,28 +410,30 @@
 
    Check running minions
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
-    salt-run manage.status
+    salt-run --no-color manage.status
    #+END_SRC
 
    #+RESULTS:
-   [0;36mdown[0;0m:
-   [0;36mup[0;0m:
-       [0;32m- sorano.home[0;0m
-       [0;32m- sorano.salt[0;0m
 
    Check statusof minion keys
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
-   salt-key -L
+   salt-key -L --no-color
    #+END_SRC
 
    #+RESULTS:
-   [0;1;32mAccepted Keys:[0;0m
-   [0;32msorano.home[0;0m
-   [0;32msorano.salt[0;0m
-   [0;1;35mDenied Keys:[0;0m
-   [0;1;31mUnaccepted Keys:[0;0m
-   [0;1;34mRejected Keys:[0;0m
-
+   Accepted Keys:
+   livingroom.sorano
+   media.sorano
+   sorano.home
+   sorano.salt
+   Denied Keys:
+   media.sorano
+   Unaccepted Keys:
+   a9dafed0a3a5
+   raspberrypi
+   Rejected Keys:
+   
+   
 
 * Manage docker
 
@@ -445,6 +446,9 @@
     echo 'Deleting unnamed containers'
     docker images | grep "^<none>" | awk '{print $3}' xargs docker rmi
   #+END_SRC
+
+  Connect to a docker session
+  docker exec -it <docker-host> bash
 
 
 * Containers
@@ -495,7 +499,7 @@
 **** TODO Autorun configuration
     
 
-* Non containers
+* Non container applications
   Software not installed as containers because it's the only functionality on the system. Or because the architecture might not be the same x86/ARM
 
 ** Kodi
@@ -546,6 +550,24 @@
    accept key on master
    salt-key -a livingroom.sorano
 
+
+** Nitro
+
+   Install saltstack
+   #+BEGIN_SRC sh :dir /sudo::/
+   pacman -S salt-raet
+   #+END_SRC 
+
+   Configure minion
+   - Change master to 192.168.1.2 in /etc/salt/minion
+
+   Start minion
+   #+BEGIN_SRC sh :dir /sudo::/
+   systemctl enable salt-minion
+   systemctl start salt-minion
+   #+END_SRC
+
+     
 
 * TODO Security
 
