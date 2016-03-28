@@ -4,6 +4,7 @@
   
 ** TODO One step install script
 
+
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -34,21 +35,20 @@
     These directories are not controlled by the source control. 
     They are only needed to make sure the infor stored there is persisted
 
-
 *** build the salt master
   
       Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
       It should leave no traces.
 
-      #+HEADER: :var ssh_pwd='not_real'
+      #+HEADER: :var ssh_pwd='notreal'
       #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
       #+END_SRC  
 
-      #+RESULTS:              
-      Sending build context to Docker daemon 40.96 kBSending build context to Docker daemon 40.96 kB
+      #+RESULTS:
+      Sending build context to Docker daemon  38.4 kBSending build context to Docker daemon  38.4 kB
       Step 1 : FROM debian:jessie
        ---> 23cb15b0fcec
       Step 2 : RUN apt-get update && apt-get install -y wget
@@ -74,52 +74,59 @@
        ---> 97ffc3e78f1b
       Step 9 : COPY master /etc/salt/master
        ---> Using cache
-       ---> 85c6fc82a47f
+       ---> b68a4d0d3f9a
       Step 10 : EXPOSE 4505 4506
        ---> Using cache
-       ---> 058ee85038b1
-      Step 11 : RUN apt-get install -y openssh-server supervisor
+       ---> acbe3f0f46d9
+      Step 11 : RUN apt-get update && apt-get install -y openssh-server supervisor
        ---> Using cache
-       ---> 5e5e57a5ad6a
+       ---> 06f5c7c4ac74
       Step 12 : RUN mkdir -p /var/run/sshd
        ---> Using cache
-       ---> 6ac361f166b8
+       ---> 6dc9283f0445
       Step 13 : COPY pwdfile /etc/pwdfile
-       ---> Using cache
-       ---> 8ff37065f01a
+       ---> a6d5859ea9d7
+      Removing intermediate container 742f189fc97d
       Step 14 : RUN echo root:`cat /etc/pwdfile` | chpasswd
-       ---> Using cache
-       ---> 1c82107aed27
+       ---> Running in f79ccde4c89c
+       ---> 65f7725229b8
+      Removing intermediate container f79ccde4c89c
       Step 15 : RUN rm /etc/pwdfile
-       ---> Using cache
-       ---> 27780ca583c6
+       ---> Running in b0a4a71dbdbf
+       ---> bd1d5c049fea
+      Removing intermediate container b0a4a71dbdbf
       Step 16 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-       ---> Using cache
-       ---> 2cd7fb2f3a9c
+       ---> Running in 0e68b3977e1e
+       ---> e0698c6172a1
+      Removing intermediate container 0e68b3977e1e
       Step 17 : ENV NOTVISIBLE "in users profile"
-       ---> Using cache
-       ---> 1466ad0677d6
+       ---> Running in c4a32f74cf4b
+       ---> df9f220f5694
+      Removing intermediate container c4a32f74cf4b
       Step 18 : RUN echo "export VISIBLE=now" >> /etc/profile
-       ---> Using cache
-       ---> 3a231f83fce6
+       ---> Running in e3b01b6266dd
+       ---> 9c82d0e30c18
+      Removing intermediate container e3b01b6266dd
       Step 19 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-       ---> Using cache
-       ---> 66d2704e6d21
+       ---> Running in 02d917b4ceda
+       ---> 3c72099e5f87
+      Removing intermediate container 02d917b4ceda
       Step 20 : EXPOSE 22
-       ---> Using cache
-       ---> 9a6388420fc4
+       ---> Running in a90e192c89b5
+       ---> 93d167366d82
+      Removing intermediate container a90e192c89b5
       Step 21 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-       ---> 00a542ecabc2
-      Removing intermediate container 8a012da1087f
+       ---> 79446f502c24
+      Removing intermediate container d665728fe5e6
       Step 22 : RUN mkdir -p /var/log/supervisor
-       ---> Running in c5f885c54a1b
-       ---> e06008841295
-      Removing intermediate container c5f885c54a1b
+       ---> Running in 37bf1594f1d3
+       ---> c90af80bede7
+      Removing intermediate container 37bf1594f1d3
       Step 23 : CMD /usr/bin/supervisord
-       ---> Running in 9a60765f65d1
-       ---> 2d83eef75170
-      Removing intermediate container 9a60765f65d1
-      Successfully built 2d83eef75170
+       ---> Running in ef5459c4e932
+       ---> 28da4b1e34f3
+      Removing intermediate container ef5459c4e932
+      Successfully built 28da4b1e34f3
 
 
 *** Starting the saltmaster manually
@@ -192,12 +199,12 @@
     #+RESULTS:
     [1;32m●[0m saltmaster.service - Saltmaster for Sorano
        Loaded: loaded (/etc/systemd/system/saltmaster.service; enabled)
-       Active: [1;32mactive (running)[0m since Sun 2015-11-29 22:44:15 CET; 7ms ago
-      Process: 5715 ExecStop=/usr/bin/docker stop saltmaster (code=exited, status=0/SUCCESS)
-     Main PID: 5828 (docker)
+       Active: [1;32mactive (running)[0m since Mon 2016-03-28 22:16:42 CEST; 6ms ago
+      Process: 10803 ExecStop=/usr/bin/docker stop saltmaster (code=exited, status=0/SUCCESS)
+     Main PID: 10838 (docker)
        CGroup: /system.slice/saltmaster.service
-               └─5828 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p ...
-
+               └─10838 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p...
+    
 
 ** TODO setup a machine as saltminion
 
@@ -398,13 +405,14 @@
    
 ** Minions
 
-*** TODO Upgrade
+*** Upgrade
     https://docs.saltstack.com/en/latest/topics/installation/debian.html
 
     #+BEGIN_SRC sh :dir /sshpi@192.168.1.250:/home/pi
     wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
     
     #+END_SRC
+
 
 *** State
 
@@ -414,6 +422,12 @@
    #+END_SRC
 
    #+RESULTS:
+   down:
+       - livingroom.sorano
+   up:
+       - media.sorano
+       - sorano.home
+       - sorano.salt
 
    Check statusof minion keys
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
@@ -427,11 +441,11 @@
    sorano.home
    sorano.salt
    Denied Keys:
-   media.sorano
    Unaccepted Keys:
    a9dafed0a3a5
    raspberrypi
    Rejected Keys:
+   
    
    
 
@@ -550,16 +564,17 @@
    accept key on master
    salt-key -a livingroom.sorano
 
-
+   
 ** Nitro
 
    Install saltstack
    #+BEGIN_SRC sh :dir /sudo::/
-   pacman -S salt-raet
+   pacman -S salt-zmq
    #+END_SRC 
 
    Configure minion
    - Change master to 192.168.1.2 in /etc/salt/minion
+   - set id: id:sorano.nitro
 
    Start minion
    #+BEGIN_SRC sh :dir /sudo::/
@@ -567,7 +582,8 @@
    systemctl start salt-minion
    #+END_SRC
 
-     
+   Accept the key on the master
+
 
 * TODO Security
 

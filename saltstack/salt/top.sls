@@ -4,3 +4,5 @@ base:
   'livingroom.sorano':
     - aur
     - media_client
+  'nitro.sorano':
+    - salt_syndic
