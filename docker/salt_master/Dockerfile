@@ -28,7 +28,7 @@ COPY master /etc/salt/master
 EXPOSE 4505 4506
 
 # Install and configure sshd
-RUN apt-get install -y openssh-server supervisor
+RUN apt-get update && apt-get install -y openssh-server supervisor
 RUN mkdir -p /var/run/sshd
 #get the password
 COPY pwdfile /etc/pwdfile 
