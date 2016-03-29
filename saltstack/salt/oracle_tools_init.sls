@@ -1,7 +1,12 @@
+include:
+  - salt_syndic
+  
 https://github.com/vercapi/oracleTools.git:
   git.latest:
     - user: vercapi
-    - target: /tmp/oracleTools    
+    - target: /tmp/oracleTools
+    - require:
+      - sls: salt_syndic
 
 copy_file:
   cmd.run:
