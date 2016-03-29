@@ -446,7 +446,12 @@
    raspberrypi
    Rejected Keys:
    
-   
+   Run a specific state
+   '*' Can be any host or other "search criteria".
+   state can be any state defined in /srv/salt
+   #+BEGIN_SRC sh :di /ssh:root@192.168.1.2#2222:/root :results raw
+   salt '*' sate.apply state
+   #+END_SRC
    
 
 * Manage docker
@@ -567,6 +572,10 @@
    
 ** Nitro
 
+*** Initial salt minion install
+    
+   After the minion is installed it will be configured by the saltmaster
+
    Install saltstack
    #+BEGIN_SRC sh :dir /sudo::/
    pacman -S salt-zmq
@@ -583,6 +592,12 @@
    #+END_SRC
 
    Accept the key on the master
+
+
+*** Oracle Tools
+
+    This project is managed by the oracle_tools_init.sls file. 
+    This state will provide the needed salt files from github to the salt master config
 
 
 * TODO Security
