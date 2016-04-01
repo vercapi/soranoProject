@@ -217,6 +217,7 @@
 ** Base minion
 
 *** Build the minion
+
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/debian_minion :results raw
     docker build -t vercapi/debian_minion .
     #+END_SRC
@@ -251,7 +252,7 @@
     Successfully built 8cbd0f619d49
 
 
-*** Running the minion manually
+*** Pre-Registering the minion with the master
 
     Generate key on the master and place it on the master as approved, then copy the same key to the minion
     Preapares the local volumes
@@ -283,19 +284,9 @@
     #+END_SRC
 
     #+RESULTS: init_docker_minion
-    #+begin_example
-    [0;36msorano.home[0;0m:
-    [0;36msorano.home[0;0m:
-    /srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub
-    [0;36msorano.home[0;0m:
-        [0;36m----------[0;0m
-        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub[0;0m:
-            [0;1;33mTrue[0;0m
-    [0;36msorano.home[0;0m:
-        [0;36m----------[0;0m
-        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pem[0;0m:
-            [0;1;33mTrue[0;0m
-#+end_example
+
+
+*** Running the minion manually
 
     Start as daemon, after creating the needed directories.
     Directories will not be re-created if they already exist.
@@ -409,8 +400,7 @@
     https://docs.saltstack.com/en/latest/topics/installation/debian.html
 
     #+BEGIN_SRC sh :dir /sshpi@192.168.1.250:/home/pi
-    wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
-    
+    wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -    
     #+END_SRC
 
 
@@ -435,16 +425,7 @@
    #+END_SRC
 
    #+RESULTS:
-   Accepted Keys:
-   livingroom.sorano
-   media.sorano
-   sorano.home
-   sorano.salt
-   Denied Keys:
-   Unaccepted Keys:
-   a9dafed0a3a5
-   raspberrypi
-   Rejected Keys:
+   
    
    Run a specific state
    '*' Can be any host or other "search criteria".
