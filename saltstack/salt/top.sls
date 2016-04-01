@@ -1,6 +1,7 @@
 base:
   'sorano.home':
     - media_server
+    - docker_builder
   'livingroom.sorano':
     - aur
     - media_client
