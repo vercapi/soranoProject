@@ -262,7 +262,21 @@
       trap finish EXIT
     #+END_SRC
 
+    #+RESULTS: init_docker_minion
+    [0;36msorano.home[0;0m:
+    [0;36msorano.home[0;0m:
+    /srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub
+    [0;36msorano.home[0;0m:
+        [0;36m----------[0;0m
+        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pub[0;0m:
+            [0;1;33mTrue[0;0m
+    [0;36msorano.home[0;0m:
+        [0;36m----------[0;0m
+        [0;36m/srv/docker/volumes/minion.sorano/etc/salt/pki/minion/minion.pem[0;0m:
+            [0;1;33mTrue[0;0m
+
     #+RESULTS:
+
 
 *** Running the minion manually
 
@@ -331,6 +345,14 @@
     #+END_SRC
 
 
+*** Testing and development
+
+    Running a salt state to deploy a different version for testing
+
+    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
+    salt 'sorano.home' state.apply debian_minion pillar='{"home_dockers": {"minion.sorano": [{"version": "2.0"},{"name":"other"}]}}'
+    #+END_SRC
+
 * Manage saltstack
   
 ** Pillar
@@ -341,21 +363,28 @@
    #+END_SRC   
 
    #+RESULTS:
-   sorano.salt:
-       ----------
-   sorano.home:
-       ----------
-       home_dockers:
-           ----------
-           media.sorano:
-               media_server
-   livingroom.sorano:
-       Minion did not return. [Not connected]
 
    Push the latest pillar data to the minions
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
    salt --no-color '*' saltutil.refresh_pillar
    #+END_SRC
+
+   #+RESULTS:
+   media.sorano:
+       True
+   sorano.home:
+       True
+   sorano.salt:
+       True
+   nitro.sorano:
+       True
+   minion.oracletools:
+       Minion did not return. [Not connected]
+   livingroom.sorano:
+       Minion did not return. [Not connected]
+   minion.sorano:
+       Minion did not return. [Not connected]
+
    
 
 ** Grains

@@ -1,2 +1,6 @@
 home_dockers:
-  media.sorano: media_server
+  minion.sorano:
+    - version: 1.0
+    - name: minion.sorano
+    
+  
