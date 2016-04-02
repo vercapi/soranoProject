@@ -218,38 +218,17 @@
 
 *** Build the minion
 
+    We build the minion with a specific version. It will also label this one as the latest.
+
+    #+HEADER: :var image_name="debian_minion" 
+    #+HEADER: :var version="1.0"
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/debian_minion :results raw
-    docker build -t vercapi/debian_minion .
+    DID=$(docker build -t vercapi/${image_name} . | awk '/Successfully built/{print $NF}')
+    docker tag $DID vercapi/$image_name:$version 
+    docker tag $DID vercapi/$image_name:latest 
     #+END_SRC
 
     #+RESULTS:
-    Sending build context to Docker daemon 3.584 kBSending build context to Docker daemon 3.584 kB
-    Step 1 : FROM debian:jessie
-     ---> 23cb15b0fcec
-    Step 2 : RUN apt-get update && apt-get install -y wget
-     ---> Using cache
-     ---> 55d283517c48
-    Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
-     ---> Using cache
-     ---> 6cc4d0f38d83
-    Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
-     ---> Using cache
-     ---> 90d5f7cd5b9c
-    Step 5 : RUN apt-get update && apt-get install -y salt-minion supervisor
-     ---> Using cache
-     ---> 662db755799f
-    Step 6 : ADD ./minion /etc/salt/minion
-     ---> 56cc54096e64
-    Removing intermediate container 8528d5b1b7b2
-    Step 7 : VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
-     ---> Running in be8dcfbba7b0
-     ---> 5c25085d7038
-    Removing intermediate container be8dcfbba7b0
-    Step 8 : CMD /usr/bin/salt-minion
-     ---> Running in 3b361ae3a7d2
-     ---> 8cbd0f619d49
-    Removing intermediate container 3b361ae3a7d2
-    Successfully built 8cbd0f619d49
 
 
 *** Pre-Registering the minion with the master
@@ -272,8 +251,8 @@
 
       echo '/srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pub'
 
-      salt-cp 'sorano.home' $PUB_KEY_FILE_NAME /srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pub
-      salt-cp 'sorano.home' $PRIV_KEY_FILE_NAME /srv/docker/volumes/$minion/etc/salt/pki/minion/minion.pem
+      salt-cp 'sorano.home' $PUB_KEY_FILE_NAME '/srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pub'
+      salt-cp 'sorano.home' $PRIV_KEY_FILE_NAME '/srv/docker/volumes/'$minion'/etc/salt/pki/minion/minion.pem'
 
       finish () {
           rm -f $PUB_KEY_FILE_NAME
@@ -283,8 +262,7 @@
       trap finish EXIT
     #+END_SRC
 
-    #+RESULTS: init_docker_minion
-
+    #+RESULTS:
 
 *** Running the minion manually
 
@@ -301,7 +279,6 @@
     #+END_SRC
 
     #+RESULTS: start_docker_minion
-    : 5e563ac222c308500b960a5ca0565c4520d15981f214b63747f7346930032339
 
     Removing a docker minion
     #+NAME: remove_docker_minion
@@ -451,8 +428,8 @@
   docker exec -it <docker-host> bash
 
 
-* Containers
-
+* TODO Containers
+  
 ** Plex Media server
 
 *** Build docker
