@@ -353,6 +353,12 @@
     salt 'sorano.home' state.apply debian_minion pillar='{"home_dockers": {"minion.sorano": [{"version": "2.0"},{"name":"other"}]}}'
     #+END_SRC
 
+
+*** TODO Minion build state
+
+    State to build minion we would use the call from Testing and development to actually build it.
+    But with no existing pillar file, it can only be run by supplying the arguments.
+
 * Manage saltstack
   
 ** Pillar

@@ -7,3 +7,4 @@ base:
     - media_client
   'nitro.sorano':
     - salt_syndic
+    - docker_builder
