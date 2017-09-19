@@ -2,8 +2,8 @@ FROM debian:jessie
 
 # Update repositories
 RUN apt-get update && apt-get install -y wget
-RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
-RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+RUN wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+RUN echo deb http://repo.saltstack.com/apt/debian/8/amd64/latest jessie main >> /etc/apt/sources.list
 
 #Volumes for persistent data
 VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar', '/etc/salt/minion.d']
