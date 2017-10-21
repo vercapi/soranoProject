@@ -463,11 +463,52 @@
   docker exec -it <docker-host> bash
 
 
-* TODO Containers
-  
+* Container apps
+
+** Base images
+
+*** Debian base image
+    :PROPERTIES:
+    :header-args: :dir docker/debian_minion/
+    :tangle: docker/debian_minion/Dockerfile
+    :END:
+
+    File list for debian base image:
+    #+BEGIN_SRC sh :exports results :tangle no
+    ls
+    #+END_SRC
+
+    #+RESULTS:
+    | Dockerfile |
+    | minion     |
+
+    #+BEGIN_SRC dockerfile :exports code :padline no
+      FROM debian:jessie
+      RUN apt-get update && apt-get install -y wget
+      
+      # Add correct repository and its key
+      RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+      RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+      
+      # Install and configure salt minion
+      RUN apt-get update && apt-get install -y salt-minion supervisor
+      ADD ./minion /etc/salt/minion
+      
+      # Mapping the minion.d to git and the pki to a local direcotry so that a new run doesn't change the keys
+      VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
+      
+      # Run the Salt Minion and do not detach from the terminal.
+      # This is important because the Docker container will exit whenever
+      # the CMD process exits.
+      CMD /usr/bin/salt-minion
+    #+END_SRC
+   
+   
 ** Plex Media server
 
-*** Build docker
+*** TODO Build docker
+
+    
     
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/media_server
       docker build -t vercapi/media_server .
