@@ -141,15 +141,8 @@
 
 *** Starting the saltmaster manually
 
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|docker:saltmasterB:/etc
-    ls /etc/salt/master
-    #+END_SRC
-
-    #+RESULTS:
-    : /etc/salt/master
-
-    Start as daemon
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject
+    Manually start salt master docker as daemon.
+    #+BEGIN_SRC sh :dir /home/sorano/soranoProject
       docker run -id -h sorano.salt \
              -p 4505:4505 -p 4506:4506 -p 2222:22 \
              --name saltmaster \
@@ -164,28 +157,45 @@
     #+END_SRC
 
     #+RESULTS:
-    : 96a7dcfcc2b9471450660640d43f376e25cca3f5ed55c361de46c1f9f1017b2e
+    : db8f172dfd8bfaed49707c18ed73d70a4afdd081c44331a50347edbaa1065504
 
     Open connection to salt master to see if it is running
-    #+BEGIN_SRC sh /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    #+BEGIN_SRC sh
     nc -v 127.0.0.1 4506 
     #+END_SRC
 
+    Create shell to salt master cokder
+    #+BEGIN_SRC sh
+    ssh root@127.0.0.1 -p 2222
+    #+END_SRC
+
     Check running dockers
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    #+BEGIN_SRC sh :results raw
     docker ps
     #+END_SRC
 
-    Manually stop the maching
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    #+RESULTS:
+    CONTAINER ID        IMAGE                 COMMAND                  CREATED              STATUS              PORTS                                                    NAMES
+    db8f172dfd8b        vercapi/salt_master   "/usr/bin/supervisord"   About a minute ago   Up About a minute   0.0.0.0:4505-4506->4505-4506/tcp, 0.0.0.0:2222->22/tcp   saltmaster
+
+    Manually stop the machine
+    #+BEGIN_SRC
     docker stop saltmaster && docker rm saltmaster
     #+END_SRC
 
     Attach to running machine
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/
+    #+BEGIN_SRC
     docker exec -it saltmaster bash
     #+END_SRC
 
+    Check clients that are active
+    #+BEGIN_SRC sh :dir /docker:saltmaster:/ :result raw
+    salt --no-color '*' test.ping
+    #+END_SRC
+
+    #+RESULTS:
+    | nitro: |
+    | True   |
 
 
 *** Set up automatic start
@@ -287,7 +297,7 @@
     #+RESULTS:
 
 
-*** Running the minion manually
+*** TODO Running the minion manually
 
     Start as daemon, after creating the needed directories.
     Directories will not be re-created if they already exist.
