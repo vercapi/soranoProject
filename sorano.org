@@ -4,7 +4,6 @@
   
 ** TODO One step install script
 
-
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -15,6 +14,12 @@
      apt-get update
      apt-get install docker-engine
      systemctl enable docker
+   #+END_SRC
+
+   Enable non root users to run docker
+   #+BEGIN_SRC sh
+     sudo groupadd docker
+     sudo usermod -aG docker $USER
    #+END_SRC
 
 *** TODO Make sure docker has enough disk space
