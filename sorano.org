@@ -42,97 +42,70 @@
 
 *** build the salt master
   
-      Build the saltmaster with a ssh password as paramet. The password file is removed from the host and the docker after building the image.
-      It should leave no traces.
+    #+BEGIN_SRC dockerfile :tangle docker/salt_master/Dockerfile
+      FROM debian:jessie
 
-      #+HEADER: :var ssh_pwd='notreal'
-      #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano/soranoProject/docker/salt_master :results raw
+      # Update repositories
+      RUN apt-get update && apt-get install -y wget
+      RUN wget -O - https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+      RUN echo deb http://repo.saltstack.com/apt/debian/8/amd64/latest jessie main >> /etc/apt/sources.list
+
+      #Volumes for persistent data
+      VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar', '/etc/salt/minion.d']
+
+      # /etc/salt/pki      - This holds the Salt Minion authentication keys
+      # /var/cache/salt    - Job and Minion data cache
+      # /var/logs/salt     - Salts log directory
+      # /etc/salt/master.d - Master configuration include directory
+      # /srv/salt          - Holds your states, pillars etc
+
+      # Install salt master
+      RUN apt-get update && apt-get install -y salt-master
+
+      # Install and configure salt minion
+      RUN apt-get update && apt-get install -y salt-minion
+      ADD ./minion /etc/salt/minion
+
+      # Write master cong
+      COPY master /etc/salt/master
+
+      # Configure ports for salt
+      EXPOSE 4505 4506
+
+      # Install and configure sshd
+      RUN apt-get update && apt-get install -y openssh-server supervisor
+      RUN mkdir -p /var/run/sshd
+      #get the password
+      COPY pwdfile /etc/pwdfile 
+      RUN echo root:`cat /etc/pwdfile` | chpasswd
+      #remove the password
+      RUN rm /etc/pwdfile 
+      RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+      ENV NOTVISIBLE "in users profile"
+      RUN echo "export VISIBLE=now" >> /etc/profile
+
+      # SSH login fix. Otherwise user is kicked off after login
+      RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+      # Expose the ssh port
+      EXPOSE 22
+
+      # Install supervisor
+      COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+      RUN mkdir -p /var/log/supervisor
+
+      # Run supervisor
+      CMD ["/usr/bin/supervisord"]
+    #+END_SRC
+
+    Build the saltmaster with a ssh password as parameter. The password file is removed from the host and the docker after building the image.
+    it should leave no traces.
+    #+HEADER: :var ssh_pwd="notreal" version="1.0"
+    #+BEGIN_SRC sh :dir docker/salt_master :results raw
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
-      #+END_SRC  
-
-      #+RESULTS:
-      Sending build context to Docker daemon  38.4 kBSending build context to Docker daemon  38.4 kB
-      Step 1 : FROM debian:jessie
-       ---> 23cb15b0fcec
-      Step 2 : RUN apt-get update && apt-get install -y wget
-       ---> Using cache
-       ---> 55d283517c48
-      Step 3 : RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
-       ---> Using cache
-       ---> 6cc4d0f38d83
-      Step 4 : RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
-       ---> Using cache
-       ---> 90d5f7cd5b9c
-      Step 5 : VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/logs/salt', '/etc/salt/master.d', '/srv/salt', '/srv/pillar', '/etc/salt/minion.d']
-       ---> Using cache
-       ---> 5fe3e3ee0cf2
-      Step 6 : RUN apt-get update && apt-get install -y salt-master
-       ---> Using cache
-       ---> 26e910d78093
-      Step 7 : RUN apt-get update && apt-get install -y salt-minion
-       ---> Using cache
-       ---> 8b3afb5792d9
-      Step 8 : ADD ./minion /etc/salt/minion
-       ---> Using cache
-       ---> 97ffc3e78f1b
-      Step 9 : COPY master /etc/salt/master
-       ---> Using cache
-       ---> b68a4d0d3f9a
-      Step 10 : EXPOSE 4505 4506
-       ---> Using cache
-       ---> acbe3f0f46d9
-      Step 11 : RUN apt-get update && apt-get install -y openssh-server supervisor
-       ---> Using cache
-       ---> 06f5c7c4ac74
-      Step 12 : RUN mkdir -p /var/run/sshd
-       ---> Using cache
-       ---> 6dc9283f0445
-      Step 13 : COPY pwdfile /etc/pwdfile
-       ---> a6d5859ea9d7
-      Removing intermediate container 742f189fc97d
-      Step 14 : RUN echo root:`cat /etc/pwdfile` | chpasswd
-       ---> Running in f79ccde4c89c
-       ---> 65f7725229b8
-      Removing intermediate container f79ccde4c89c
-      Step 15 : RUN rm /etc/pwdfile
-       ---> Running in b0a4a71dbdbf
-       ---> bd1d5c049fea
-      Removing intermediate container b0a4a71dbdbf
-      Step 16 : RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-       ---> Running in 0e68b3977e1e
-       ---> e0698c6172a1
-      Removing intermediate container 0e68b3977e1e
-      Step 17 : ENV NOTVISIBLE "in users profile"
-       ---> Running in c4a32f74cf4b
-       ---> df9f220f5694
-      Removing intermediate container c4a32f74cf4b
-      Step 18 : RUN echo "export VISIBLE=now" >> /etc/profile
-       ---> Running in e3b01b6266dd
-       ---> 9c82d0e30c18
-      Removing intermediate container e3b01b6266dd
-      Step 19 : RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-       ---> Running in 02d917b4ceda
-       ---> 3c72099e5f87
-      Removing intermediate container 02d917b4ceda
-      Step 20 : EXPOSE 22
-       ---> Running in a90e192c89b5
-       ---> 93d167366d82
-      Removing intermediate container a90e192c89b5
-      Step 21 : COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-       ---> 79446f502c24
-      Removing intermediate container d665728fe5e6
-      Step 22 : RUN mkdir -p /var/log/supervisor
-       ---> Running in 37bf1594f1d3
-       ---> c90af80bede7
-      Removing intermediate container 37bf1594f1d3
-      Step 23 : CMD /usr/bin/supervisord
-       ---> Running in ef5459c4e932
-       ---> 28da4b1e34f3
-      Removing intermediate container ef5459c4e932
-      Successfully built 28da4b1e34f3
-
+      docker tag vercapi/salt_master:latest vercapi/salt_master:1.0
+    #+END_SRC  
 
 *** Starting the saltmaster manually
 
@@ -235,7 +208,7 @@
 
     #+RESULTS:
 
-
+    
 *** Pre-Registering the minion with the master
 
     Generate key on the master and place it on the master as approved, then copy the same key to the minion
@@ -363,6 +336,7 @@
 
     State to build minion we would use the call from Testing and development to actually build it.
     But with no existing pillar file, it can only be run by supplying the arguments.
+
 
 * Manage saltstack
   
