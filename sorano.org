@@ -27,8 +27,10 @@
 
 ** Setup salt master docker
    
+*** Prep system for running docker
+
    Set up dependencies for salt master docker to run
-    #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/srv
+    #+BEGIN_SRC sh :tangle docker/salt_master/build_salt_master.sh
       mkdir -p /srv/docker/volumes/saltmaster/etc/salt/pki
       mkdir -p /srv/docker/volumes/saltmaster/var/cache/salt
       mkdir -p /srv/docker/volumes/saltmaster/var/logs/salt
@@ -40,9 +42,10 @@
     These directories are not controlled by the source control. 
     They are only needed to make sure the infor stored there is persisted
 
-*** build the salt master
+
+*** build the salt master docker file
   
-    #+BEGIN_SRC dockerfile :tangle docker/salt_master/Dockerfile
+    #+BEGIN_SRC dockerfile :tangle docker/salt_master/dockerfiles/Dockerfile
       FROM debian:jessie
 
       # Update repositories
@@ -100,12 +103,14 @@
     Build the saltmaster with a ssh password as parameter. The password file is removed from the host and the docker after building the image.
     it should leave no traces.
     #+HEADER: :var ssh_pwd="notreal" version="1.0"
-    #+BEGIN_SRC sh :dir docker/salt_master :results raw
+    #+BEGIN_SRC sh :dir docker/salt_master :results raw :tangle docker/salt_master/build_salt_master.sh
+      cd dockerfiles
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
       docker tag vercapi/salt_master:latest vercapi/salt_master:1.0
     #+END_SRC  
+
 
 *** Starting the saltmaster manually
 
