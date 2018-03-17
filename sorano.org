@@ -4,6 +4,11 @@
   
 ** TODO One step install script
 
+   Should actually be build script.
+
+   - [ ] Tangle this file
+   - [ ] 
+
 ** Install docker on sorano.home
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
@@ -44,6 +49,10 @@
 
 
 *** build the salt master docker file
+
+    Files not in org-mode:
+    - [[file:docker/salt_master/dockerfiles/master][salt config file 'master']]
+    - [[file:docker/salt_master/dockerfiles/minion][salt config file 'minion']]
   
     #+BEGIN_SRC dockerfile :tangle docker/salt_master/dockerfiles/Dockerfile
       FROM debian:jessie
@@ -108,12 +117,29 @@
       echo $ssh_pwd > pwdfile
       docker build -t vercapi/salt_master .
       rm pwdfile
-      docker tag vercapi/salt_master:latest vercapi/salt_master:1.0
-    #+END_SRC  
+      docker tag vercapi/salt_master:latest vercapi/salt_master:$version
+    #+END_SRC
+
+    Docker will run supervisord to start sshd and salt-minion next to salt-master.
+    The salt-master is the main purpose of the docker. 
+    - salt-minion is for selfconfig
+    - sshd is to control the salt master remotely
+    #+BEGIN_SRC conf :tangle docker/salt_master/dockerfiles/supervisord.conf
+      [supervisord]
+      nodaemon=true
+
+      [program:sshd]
+      command=/usr/sbin/sshd -D
+
+      [program:salt-master]
+      command=/usr/bin/salt-master -d
+
+      [program:salt-minion]
+      command=/usr/bin/salt-minion -d
+    #+END_SRC
 
 
 *** Starting the saltmaster manually
-
 
     #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|docker:saltmasterB:/etc
     ls /etc/salt/master
