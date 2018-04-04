@@ -9,11 +9,13 @@
    - [ ] Tangle this file
    - [ ] 
 
-** Install docker on sorano.home
+
+** TODO Install docker
    
    Followed this [[https://docs.docker.com/engine/installation/debian/][Documentation]]
 
-   #+BEGIN_SRC sh :dir /ssh:sorano@192.168.1.2|sudo:192.168.1.2:/home/sorano
+   Installing docker on debian. This should be installed via local saltstack state
+   #+BEGIN_SRC sh
      apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
      echo 'deb https://apt.dockerproject.org/repo debian-jessy main' >> /etc/apt/sources.list
      apt-get update
@@ -22,7 +24,7 @@
    #+END_SRC
 
    Enable non root users to run docker
-   #+BEGIN_SRC sh
+   #+BEGIN_SRC sh :tagnle setup.sh
      sudo groupadd docker
      sudo usermod -aG docker $USER
    #+END_SRC
