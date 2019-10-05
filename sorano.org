@@ -50,7 +50,7 @@
     They are only needed to make sure the infor stored there is persisted
 
 
-*** build the salt master docker file
+*** Salt master docker file
 
     Files not in org-mode:
     - [[file:docker/salt_master/dockerfiles/master][salt config file 'master']]
@@ -140,7 +140,7 @@
       command=/usr/bin/salt-minion -d
     #+END_SRC
 
-
+    
 *** Starting the saltmaster manually
 
     Manually start salt master docker as daemon.
@@ -159,7 +159,7 @@
     #+END_SRC
 
     #+RESULTS:
-    : db8f172dfd8bfaed49707c18ed73d70a4afdd081c44331a50347edbaa1065504
+    : ffa794a85df0eec0c96595725947e742a594d5f4ccc802d4682199d0d3680975
 
     Open connection to salt master to see if it is running
     #+BEGIN_SRC sh
@@ -191,13 +191,11 @@
     #+END_SRC
 
     Check clients that are active
-    #+BEGIN_SRC sh :dir /docker:saltmaster:/ :result raw
+    #+BEGIN_SRC sh :dir /docker:saltmaster:
     salt --no-color '*' test.ping
     #+END_SRC
 
     #+RESULTS:
-    | nitro: |
-    | True   |
 
 
 *** Set up automatic start
@@ -227,6 +225,7 @@
                └─10838 /usr/bin/docker run -i --rm -h sorano.salt -p 4505:4505 -p...
     
 
+
 ** TODO setup a machine as saltminion
 
    * Keep base minon file under source control
@@ -236,6 +235,31 @@
 
 
 ** Base minion
+
+*** Base miniion docker file
+
+    Docker file for a base minion docker
+    #+BEGIN_SRC dockerfile tangle: ./docker/debian_minion/Dockerfile
+      FROM debian:jessie
+      RUN apt-get update && apt-get install -y wget
+
+      # Add correct repository and its key
+      RUN wget -O - https://repo.saltstack.com/apt/debian/latest/SALTSTACK-GPG-KEY.pub | apt-key add -
+      RUN echo deb http://repo.saltstack.com/apt/debian/latest jessie main >> /etc/apt/sources.list
+
+      # Install and configure salt minion
+      RUN apt-get update && apt-get install -y salt-minion supervisor
+      ADD ./minion /etc/salt/minion
+
+      # Mapping the minion.d to git and the pki to a local direcotry so that a new run doesn't change the keys
+      VOLUME ['/etc/salt/minion.d', '/etc/salt/pki']
+
+      # Run the Salt Minion and do not detach from the terminal.
+      # This is important because the Docker container will exit whenever
+      # the CMD process exits.
+      CMD /usr/bin/salt-minion
+    #+END_SRC
+
 
 *** Build the minion
 
