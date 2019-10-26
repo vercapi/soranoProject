@@ -1,6 +1,4 @@
 dhcpcd:
-  pkg.installed
-
-dhcpcd:
+  pkg.installed: []
   service.running:
     - enabler: True
