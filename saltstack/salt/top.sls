@@ -6,3 +6,4 @@ base:
   'SRN001':
     - tech-ui
     - users
+    - network
