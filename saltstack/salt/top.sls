@@ -7,3 +7,4 @@ base:
     - tech-ui
     - users
     - network
+    - tech_ui/emacs
