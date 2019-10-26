@@ -8,3 +8,7 @@ xmonad:
       - xmonad-contrib
       - xmonad-utils
       - xmobar
+
+lightdm:
+  service.running:
+    - enable: True
