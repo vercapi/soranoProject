@@ -2,6 +2,7 @@ base:
 
   '*':
     - ssh
+    - sorano_base
 
   'SRN001':
     - tech-ui
