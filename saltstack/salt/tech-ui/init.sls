@@ -15,7 +15,7 @@ lightdm:
     - enable: True
 
 /home/vercapi/.xmonad/Xmonad.hs:
-  - file.managed:
+  file.managed:
     - source: salt://tech-ui/Xmonad.hs
     - user: vercapi
     - group: vercapi
