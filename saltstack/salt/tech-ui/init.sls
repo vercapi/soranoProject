@@ -10,6 +10,7 @@ xmonad:
       - xmobar
       - stalonetray
       - rxvt-unicode
+      - xterm
 
 lightdm:
   service.running:
