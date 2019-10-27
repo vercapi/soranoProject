@@ -19,5 +19,11 @@ lightdm:
     - source: salt://tech-ui/Xmonad.hs
     - user: vercapi
     - group: vercapi
+
+/home/vercapi/.xmobarrc:
+  file.managed:
+    - source: salt://tech-ui/xmobarrc
+    - user: vercapi
+    - group: vercapi
     
   
