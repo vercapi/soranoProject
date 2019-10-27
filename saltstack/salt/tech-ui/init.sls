@@ -9,6 +9,7 @@ xmonad:
       - xmonad-utils
       - xmobar
       - stalonetray
+      - urxvt
 
 lightdm:
   service.running:
