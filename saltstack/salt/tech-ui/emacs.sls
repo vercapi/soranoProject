@@ -6,3 +6,9 @@ dot_emacs:
     - name: https://github.com/vercapi/.emacs.d.git
     - target: /home/vercapi/.emacs.d
     - branch: master
+
+secrets.el:
+  file.managed:
+    - source: salt://local/secrets.el
+    - user: vercapi
+    - group: vercapi
