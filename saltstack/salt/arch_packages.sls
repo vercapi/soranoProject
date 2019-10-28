@@ -8,7 +8,7 @@ arch_ppa_code:
     - branch: master
     - user: vercapi
 
-{{ arch_ppa_dir+'/arch-ppa }}:
+{{ arch_ppa_dir+'/arch-ppa' }}:
   file.managed: 
     - mode: 766
     - replace: False
