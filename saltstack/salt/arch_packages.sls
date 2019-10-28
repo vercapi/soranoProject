@@ -1,5 +1,5 @@
 {% set arch_ppa_dir = '/home/vercapi/.arch_ppa.d' %}
-{% set ppa_repo = 'sorano'}
+{% set ppa_repo = 'sorano'%}
 
 arch_ppa_code:
   git.latest:
