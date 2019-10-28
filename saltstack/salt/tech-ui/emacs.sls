@@ -7,7 +7,7 @@ dot_emacs:
     - target: /home/vercapi/.emacs.d
     - branch: master
 
-secrets.el:
+/home/vercapi/.emacs.d/secrets.el:
   file.managed:
     - source: salt://local/secrets.el
     - user: vercapi
