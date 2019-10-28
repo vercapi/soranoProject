@@ -19,6 +19,8 @@ setup_arch_ppa:
     - cwd: {{ arch_ppa_dir }}
     - name: ./arch-ppa setup
     - runas: vercapi
+    - require:
+      - sls: suoders
   grains.present:
     - name: arch_ppa_setup
     - value: true

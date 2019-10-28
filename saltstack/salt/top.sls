@@ -3,6 +3,7 @@ base:
   '*':
     - ssh
     - sorano_base
+    - sudoers
 
   'SRN001':
     - tech-ui
