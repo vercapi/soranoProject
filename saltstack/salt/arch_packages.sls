@@ -8,7 +8,7 @@ arch_ppa_code:
     - branch: master
     - user: vercapi
 
-{{ arch_ppa_dir }}:
+{{ arch_ppa_dir+'/arch-ppa }}:
   file.managed: 
     - mode: 766
     - replace: False
@@ -18,11 +18,14 @@ setup_arch_ppa:
   cmd.run:
     - cwd: {{ arch_ppa_dir }}
     - name: ./arch-ppa setup
-    - user: vercapi
+    - runas: vercapi
+  grains.present:
+    - name: arch_ppa_setup
+    - value: true
 {% endif %}
 
 /etc/pacman.conf:
-  file.manged:
+  file.managed:
     - source: salt://pacman/pacman.conf
     - user: vercapi
     - group: vercapi
