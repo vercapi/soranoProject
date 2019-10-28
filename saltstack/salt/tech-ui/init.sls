@@ -16,7 +16,7 @@ lightdm:
   service.running:
     - enable: True
 
-/home/vercapi/.xmonad/Xmonad.hs:
+/home/vercapi/.xmonad/xmonad.hs:
   file.managed:
     - source: salt://tech-ui/Xmonad.hs
     - user: vercapi
