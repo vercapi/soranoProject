@@ -5,6 +5,9 @@ base:
     - sorano_base
     - sudoers
 
+  'controller':
+    - master_config.sls
+
   'SRN001':
     - tech-ui
     - users
