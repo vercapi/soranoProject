@@ -6,7 +6,7 @@ base:
     - sudoers
 
   'controller':
-    - master_config.sls
+    - master_config
 
   'SRN001':
     - tech-ui
