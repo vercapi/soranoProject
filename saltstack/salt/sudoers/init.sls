@@ -1,5 +1,5 @@
 sudo:
-  pkg.installed:
+  pkg.installed
 
 /etc/sudoers:
   file.managed:
