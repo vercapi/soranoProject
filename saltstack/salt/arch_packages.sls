@@ -20,7 +20,7 @@ setup_arch_ppa:
     - name: ./arch-ppa setup
     - runas: vercapi
     - require:
-      - sls: suoders
+      - sls: sudoers
   grains.present:
     - name: arch_ppa_setup
     - value: true
