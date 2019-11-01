@@ -2,7 +2,7 @@
 
 pacaur:
   git.cloned:
-    - name: https://github.com/vercapi/.emacs.d.git
+    - name: https://aur.archlinux.org/pacaur.git
     - target: {{ aur_dir }}
     - branch: master
     - user: vercapi
