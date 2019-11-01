@@ -11,6 +11,7 @@ makepkg:
   cmd.run:
     - name: makepkg -s
     - cwd: {{ aur_dir }}
+    - runas: vercapi
     - require:
       - git: pacaur
 
