@@ -13,4 +13,3 @@ base:
     - users
     - network
     - tech-ui.emacs
-    - arch_packages
