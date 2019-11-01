@@ -13,3 +13,4 @@ base:
     - users
     - network
     - tech-ui.emacs
+    - pacman
