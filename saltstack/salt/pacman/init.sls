@@ -10,7 +10,7 @@ pacaur:
 makepkg:
   cmd.run:
     - name: makepkg -s
-    - cwd: {{ aur_dir }}
+    - cwd: {{ aur_dir }}/pacaur
     - runas: vercapi
     - require:
       - git: pacaur
@@ -18,6 +18,6 @@ makepkg:
 install:
   cmd.run:
     - name: sudo pacman -U *.pkg.tar.xz
-    - cwd: {{ aur_dir }}
+    - cwd: {{ aur_dir }}/pacaur
     - require:
       - git: makepkg
