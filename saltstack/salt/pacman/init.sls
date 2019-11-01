@@ -1,4 +1,4 @@
-{% set aur_dir = '/home/vercapi/aur/pacaur %}
+{% set aur_dir = '/home/vercapi/aur/pacaur' %}
 
 pacaur:
   git.cloned:
