@@ -1,4 +1,4 @@
-{% set aur_dir = '/home/vercapi/aur' %}
+{% set aur_dir = '/home/vercapi/aur/pacaur %}
 
 pacaur:
   git.cloned:
@@ -10,7 +10,7 @@ pacaur:
 makepkg:
   cmd.run:
     - name: makepkg -s
-    - cwd: {{ aur_dir }}/pacaur
+    - cwd: {{ aur_dir }}
     - runas: vercapi
     - require:
       - git: pacaur
@@ -18,6 +18,6 @@ makepkg:
 install:
   cmd.run:
     - name: sudo pacman -U *.pkg.tar.xz
-    - cwd: {{ aur_dir }}/pacaur
+    - cwd: {{ aur_dir }}
     - require:
       - git: makepkg
