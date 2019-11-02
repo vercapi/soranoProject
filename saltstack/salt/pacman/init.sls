@@ -14,7 +14,7 @@ makepkg_{{ package }}:
     - cwd: {{ aur_dir }}/{{ package }}
     - runas: vercapi
     - require:
-      - cmd: {{ package }}
+      - git: {{ package }}
 
 install_{{ package }}:
   cmd.run:
