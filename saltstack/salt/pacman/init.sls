@@ -10,7 +10,7 @@
 
 makepkg_{{ package }}:
   cmd.run:
-    - name: makepkg -s --noconfirm
+    - name: makepkg -sf --noconfirm
     - cwd: {{ aur_dir }}/{{ package }}
     - runas: vercapi
     - require:
