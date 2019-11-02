@@ -1,6 +1,6 @@
 {% set aur_dir = '/home/vercapi/aur' %}
 
-{% for package in pillar['aur_packages']%}
+{% for package in pillar['aur_packages']% }
 {{ package }}:
   git.cloned:
     - name: https://aur.archlinux.org/{{ package }}.git

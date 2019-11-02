@@ -2,6 +2,11 @@ xmonad:
   pkg.installed:
     - pkgs:
       - xorg-server
+      - bubmblebee
+      - nvidia
+      - mesa
+      - mesa-demos
+      - xf86-video-intel 
       - lightdm
       - lightdm-gtk-greeter
       - light-locker
@@ -10,7 +15,6 @@ xmonad:
       - xmobar
       - stalonetray
       - rxvt-unicode
-      - xterm
 
 lightdm:
   service.running:

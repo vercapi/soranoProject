@@ -8,3 +8,5 @@ vercapi:
     - fullname: Pieter Vercammen
     - uid: 2200
     - gid: 2200
+    - groups:
+      - bumbelbee
