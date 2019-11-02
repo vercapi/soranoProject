@@ -1,5 +1,4 @@
- set aur_dir = '/home/vercapi/aur' %}
-
+{% set aur_dir = '/home/vercapi/aur' %}
 
 {% for package in pillar['aur_packages']%}
 {{ package }}:
