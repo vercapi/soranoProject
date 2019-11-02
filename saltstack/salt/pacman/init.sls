@@ -1,6 +1,7 @@
 {% set aur_dir = '/home/vercapi/aur' %}
 
 {% for package in pillar['aur_packages'] %}
+{% if grains['installed']+package %}
 {{ package }}:
   git.cloned:
     - name: https://aur.archlinux.org/{{ package }}.git
@@ -22,4 +23,10 @@ install_{{ package }}:
     - cwd: {{ aur_dir }}/{{ package }}
     - require:
       - cmd: makepkg_{{ package }}
+
+installed_{{ package }}:
+  grains.present:
+    - value: true
+
+{% endif %}
 {% endfor %}
