@@ -1,23 +1,26 @@
-{% set aur_dir = '/home/vercapi/aur/pacaur' %}
+ set aur_dir = '/home/vercapi/aur' %}
 
-pacaur:
+
+{% for package in pillar['aur_packages']%}
+{{ package }}:
   git.cloned:
-    - name: https://aur.archlinux.org/pacaur.git
-    - target: {{ aur_dir }}
+    - name: https://aur.archlinux.org/{{ package }}.git
+    - target: {{ aur_dir }}/{{ package }}
     - branch: master
     - user: vercapi
 
-makepkg:
+makepkg_{{ package }}:
   cmd.run:
     - name: makepkg -s
-    - cwd: {{ aur_dir }}
+    - cwd: {{ aur_dir }}/{{ package }}
     - runas: vercapi
     - require:
-      - git: pacaur
+      - git: {{ package }}
 
 install:
   cmd.run:
     - name: sudo pacman -U *.pkg.tar.xz
-    - cwd: {{ aur_dir }}
+    - cwd: {{ aur_dir }}/{{ package }}
     - require:
-      - git: makepkg
+      - git: makepkg_{{ package }}
+{% endfor %}
