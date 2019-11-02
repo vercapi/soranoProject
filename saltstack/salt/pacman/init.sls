@@ -10,16 +10,16 @@
 
 makepkg_{{ package }}:
   cmd.run:
-    - name: makepkg -s
+    - name: makepkg -s --noconfirm
     - cwd: {{ aur_dir }}/{{ package }}
     - runas: vercapi
     - require:
-      - git: {{ package }}
+      - cmd: {{ package }}
 
 install_{{ package }}:
   cmd.run:
     - name: sudo pacman -U *.pkg.tar.xz
     - cwd: {{ aur_dir }}/{{ package }}
     - require:
-      - git: makepkg_{{ package }}
+      - cmd: makepkg_{{ package }}
 {% endfor %}
