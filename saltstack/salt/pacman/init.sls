@@ -16,7 +16,7 @@ makepkg_{{ package }}:
     - require:
       - git: {{ package }}
 
-install:
+install_{{ package }}:
   cmd.run:
     - name: sudo pacman -U *.pkg.tar.xz
     - cwd: {{ aur_dir }}/{{ package }}
