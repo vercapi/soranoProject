@@ -2,7 +2,7 @@ xmonad:
   pkg.installed:
     - pkgs:
       - xorg-server
-      - bubmblebee
+      - bumblebee
       - nvidia
       - mesa
       - mesa-demos
