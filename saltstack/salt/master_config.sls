@@ -23,8 +23,8 @@ eth0:
     - user: root
     - group: root
     - mode: 644
-    - require:
-      - cmd: add-key
+#    - require:
+#      - cmd: add-key
 
 {% endif %}
 
