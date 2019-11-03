@@ -1,7 +1,7 @@
 {% set aur_dir = '/home/vercapi/aur' %}
 
 {% for package in pillar['aur_packages'] %}
-{% if grains['installed']+package %}
+{% if salt['grains.get']('installed'+package) != 'true' %}
 {{ package }}:
   git.cloned:
     - name: https://aur.archlinux.org/{{ package }}.git
