@@ -15,7 +15,7 @@ eth0:
 add-key:
   cmd.run:
     - name: wget -O - https://repo.saltstack.com/py3/debian/10/armhf/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
-    - shell: bash
+    - shell: '/bin/bash'
 
 /etc/apt/sources.list.d/saltstack.list:
   file.managed:
