@@ -1,3 +1,6 @@
+bumbelbee:
+  group.present
+
 vercapi:
   group.present:
     - gid: 2200

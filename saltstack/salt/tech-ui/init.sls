@@ -1,3 +1,7 @@
+no_noveau:
+  kmod.absent:
+    - name: noveau
+
 xmonad:
   pkg.installed:
     - pkgs:

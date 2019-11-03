@@ -406,6 +406,11 @@
 
 
 * Manage saltstack
+
+  Update fileserver (when using remote repo's such as git)
+  #+BEGIN_SRC sh
+    sudo salt-run fileserver.update
+  #+END_SRC
   
 ** Pillar
    
@@ -492,6 +497,7 @@
    salt '*' sate.apply state
    #+END_SRC
    
+
 
 * Manage docker
 
