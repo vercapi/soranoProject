@@ -10,7 +10,7 @@ eth0:
     - dns:
       - 192.168.1.1
 
-{% if notsalt['file.directory_exists' ]('/etc/apt/sources.list.d/saltstack.list') %}
+{% if not salt['file.directory_exists' ]('/etc/apt/sources.list.d/saltstack.list') %}
 
 add-key:
   cmd.run:
