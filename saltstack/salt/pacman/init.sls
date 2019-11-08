@@ -37,6 +37,7 @@ installed_{{ package }}:
 install_{{ package }}:
   cmd.run:
     - name: pacaur -S --noedit --noconfirm {{ package }}
+    - runas: vercapi
 
 installed_{{ package }}:
   grains.present:
