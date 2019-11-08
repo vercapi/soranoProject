@@ -31,7 +31,7 @@ installed_{{ package }}:
 {% endif %}
 {% endfor %}
 
-{% for package in pillar['aur_packages'] %}
+{% for package in pillar['pacaur_packages'] %}
 {% if not salt['grains.get']('installed_'+package) %}
 
 install_{{ package }}:
