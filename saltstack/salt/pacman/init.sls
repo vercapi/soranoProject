@@ -30,3 +30,17 @@ installed_{{ package }}:
 
 {% endif %}
 {% endfor %}
+
+{% for package in pillar['aur_packages'] %}
+{% if not salt['grains.get']('installed_'+package) %}
+
+install_{{ package }}:
+  cmd.run:
+    - name: pacaur -S --noedit --noconfirm {{ package }}
+
+installed_{{ package }}:
+  grains.present:
+    - value: true
+
+{% endif %}
+{% endfor %}
