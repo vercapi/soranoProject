@@ -38,4 +38,6 @@ lightdm:
     - user: vercapi
     - group: vercapi
     
-  
+/etc/X11/xorg.conf.d/90-monitor.conf:
+  file.managed:
+    - source: salt://tech-ui/monitor.conf
