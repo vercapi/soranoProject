@@ -58,3 +58,4 @@ lightdm:
     - source: salt://tech-ui/termite.conf
     - user: vercapi
     - group: vercapi
+    - makedirs: True
