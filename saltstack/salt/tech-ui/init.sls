@@ -43,3 +43,9 @@ lightdm:
     - source: salt://tech-ui/monitor.conf
     - user: vercapi
     - group: vercapi
+
+/home/vercapi/.Xresources:
+  file.managed:
+    - source: salt://tech-ui/Xresources
+    - user: vercapi
+    - group: vercapi
