@@ -21,6 +21,9 @@ xmonad:
       - rxvt-unicode
       - xorg-xdpyinfo
       - xorg-xrandr
+      - terminus-font
+      - termite
+      
 
 lightdm:
   service.running:
@@ -47,5 +50,11 @@ lightdm:
 /home/vercapi/.Xresources:
   file.managed:
     - source: salt://tech-ui/Xresources
+    - user: vercapi
+    - group: vercapi
+
+/home/vercapi/.config/termite/config:
+  file.managed:
+    - source: salt://tech-ui/termite.conf
     - user: vercapi
     - group: vercapi
