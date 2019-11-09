@@ -20,6 +20,7 @@ xmonad:
       - stalonetray
       - rxvt-unicode
       - xorg-xdpyinfo
+      - xrandr
 
 lightdm:
   service.running:
