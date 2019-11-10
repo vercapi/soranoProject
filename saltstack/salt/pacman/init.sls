@@ -27,6 +27,8 @@ install_{{ package }}:
 installed_{{ package }}:
   grains.present:
     - value: true
+    - require:
+      - cmd: install_{{ package }}
 
 {% endif %}
 {% endfor %}
@@ -42,6 +44,8 @@ install_{{ package }}:
 installed_{{ package }}:
   grains.present:
     - value: true
+    - require:
+      - cmd: install_{{ package }}
 
 {% endif %}
 {% endfor %}
