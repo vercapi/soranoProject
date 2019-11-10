@@ -2,6 +2,11 @@ no_noveau:
   kmod.absent:
     - name: noveau
 
+removed:
+  pkg.removed:
+    - rxvt-unicode
+    - noveau
+
 xmonad:
   pkg.installed:
     - pkgs:
@@ -18,7 +23,6 @@ xmonad:
       - xmonad-utils
       - xmobar
       - stalonetray
-      - rxvt-unicode
       - xorg-xdpyinfo
       - xorg-xrandr
       - terminus-font
