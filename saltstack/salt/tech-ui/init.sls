@@ -2,11 +2,6 @@ no_noveau:
   kmod.absent:
     - name: noveau
 
-removed:
-  pkg.removed:
-    - rxvt-unicode
-    - noveau
-
 xmonad:
   pkg.installed:
     - pkgs:
@@ -27,6 +22,9 @@ xmonad:
       - xorg-xrandr
       - terminus-font
       - termite
+  pkg.removed:
+    - rxvt-unicode
+    - noveau
       
 
 lightdm:
