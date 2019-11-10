@@ -28,7 +28,6 @@ xmonad:
       - xorg-xrandr
       - terminus-font
       - termite
-      
 
 lightdm:
   service.running:
