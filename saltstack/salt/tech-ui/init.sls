@@ -29,6 +29,10 @@ xmonad:
       - terminus-font
       - termite
       - lastpass-cli
+      - syncthing
+
+# syncthing needs manual config
+>>>>>>> dd32f5857b883dcd9550afaa61acb19c2df9d80b
 
 lightdm:
   service.running:
