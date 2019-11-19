@@ -28,6 +28,9 @@ xmonad:
       - xorg-xrandr
       - terminus-font
       - termite
+      - syncthing
+
+# syncthing needs manual config
 
 lightdm:
   service.running:
