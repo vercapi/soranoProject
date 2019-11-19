@@ -4,7 +4,9 @@ dhcpcd:
     - enable: True
 
 networkmanager:
-  pkg.installed: []
+  pkg.installed:
+    - networkmanager
+    - nm-connection-editor
 
 /etc/NetworkManager/system-connections/SRN_INT_24:
   file.managed:
