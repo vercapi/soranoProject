@@ -5,8 +5,9 @@ dhcpcd:
 
 networkmanager:
   pkg.installed:
-    - networkmanager
-    - nm-connection-editor
+    - pkgs:
+      - networkmanager
+      - nm-connection-editor
 
 /etc/NetworkManager/system-connections/SRN_INT_24:
   file.managed:
