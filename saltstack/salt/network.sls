@@ -9,3 +9,9 @@ networkmanager:
 /etc/NetworkManager/system-connections/SRN_INT_24:
   file.managed:
     - source: salt://local/network/SRN_INT_24
+
+NetworkManager:
+  service.running:
+    - enable: True
+    - require:
+      - pkg: networkmanager
