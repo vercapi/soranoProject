@@ -28,6 +28,7 @@ xmonad:
       - xorg-xrandr
       - terminus-font
       - termite
+      - lastpass-cli
 
 lightdm:
   service.running:
