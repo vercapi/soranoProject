@@ -15,3 +15,4 @@ base:
     - tech-ui.emacs
     - pacman
     - master_double
+    - docker_builder

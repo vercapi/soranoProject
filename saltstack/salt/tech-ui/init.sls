@@ -28,6 +28,7 @@ xmonad:
       - xorg-xrandr
       - terminus-font
       - termite
+      - lastpass-cli
       - syncthing
 
 # syncthing needs manual config
