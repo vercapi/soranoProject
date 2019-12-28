@@ -14,3 +14,4 @@ base:
     - network
     - tech-ui.emacs
     - pacman
+    - master_double
