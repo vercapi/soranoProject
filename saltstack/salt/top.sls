@@ -15,3 +15,4 @@ base:
     - tech-ui.emacs
     - pacman
     - docker_builder
+    - beacons
