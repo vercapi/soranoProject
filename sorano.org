@@ -488,16 +488,19 @@
    #+END_SRC
 
    #+RESULTS:
-   
-   
+      
    Run a specific state
    '*' Can be any host or other "search criteria".
    state can be any state defined in /srv/salt
    #+BEGIN_SRC sh :dir /ssh:root@192.168.1.2#2222:/root :results raw
-   salt '*' sate.apply state
+   salt '*' state.apply state
    #+END_SRC
    
 
+
+*** Reactor
+
+    
 
 * Manage docker
 
@@ -712,3 +715,9 @@
   - Create new dir and symlinks
   - rsync
   - umount backupdrive
+
+* Network command
+
+  #+BEGIN_SRC sh
+    nmcli c add type wifi ssid SRN_INT_24 ifname wlp59s0 con-name SRN_INT_24
+  #+END_SRC

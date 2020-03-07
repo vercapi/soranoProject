@@ -30,8 +30,14 @@ xmonad:
       - termite
       - lastpass-cli
       - syncthing
+      - xorg-xrdb
+      - rofi
 
 # syncthing needs manual config
+
+syncthing@vercapi.service:
+  service.running:
+    - enable: True
 
 lightdm:
   service.running:
@@ -67,3 +73,17 @@ lightdm:
     - user: vercapi
     - group: vercapi
     - makedirs: True
+
+/home/vercapi/.xinitrc:
+  file.managed:
+    - source: salt://tech-ui/xinitrc
+    - user: vercapi
+    - group: vercapi
+    - makedirs: True
+
+/home/vercapi/.config/rofi/config:
+    file.managed:
+      - source: salt://tech-ui/rofi-config
+      - user: vercapi
+      - group: vercapi
+      - makedirs: True
