@@ -16,3 +16,4 @@ base:
     - pacman
     - docker_builder
     - beacons
+    - kbvb
