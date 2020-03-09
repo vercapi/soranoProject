@@ -14,6 +14,7 @@ base:
     - network
     - tech-ui.emacs
     - pacman
+    - master_double
     - docker_builder
     - beacons
     - kbvb
