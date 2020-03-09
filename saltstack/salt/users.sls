@@ -1,4 +1,4 @@
-bumbelbee:
+bumblebee:
   group.present
 
 vercapi:
@@ -12,4 +12,4 @@ vercapi:
     - uid: 2200
     - gid: 2200
     - groups:
-      - bumbelbee
+      - bumblebee

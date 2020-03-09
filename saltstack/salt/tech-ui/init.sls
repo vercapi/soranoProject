@@ -13,6 +13,7 @@ xmonad:
     - pkgs:
       - xorg-server
       - bumblebee
+      - bbswitch
       - nvidia
       - mesa
       - mesa-demos
@@ -32,8 +33,14 @@ xmonad:
       - syncthing
       - xorg-xrdb
       - rofi
+      - firefox
+      - unzip
 
 # syncthing needs manual config
+
+# Download Official open jdk
+# On arch extract (tar -xzf) and copy to /usr/lib/jvm
+# Use archlinux-java
 
 syncthing@vercapi.service:
   service.running:
