@@ -17,3 +17,5 @@ base:
     - docker_builder
     - beacons
     - kbvb
+    - java
+    - jdeveloper
