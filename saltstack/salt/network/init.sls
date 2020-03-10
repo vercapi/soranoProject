@@ -9,12 +9,17 @@ networkmanager:
       - networkmanager
       - nm-connection-editor
 
-/etc/NetworkManager/system-connections/SRN_INT_24:
-  file.managed:
-    - source: salt://local/network/SRN_INT_24
-
 NetworkManager:
   service.running:
     - enable: True
     - require:
       - pkg: networkmanager
+
+/opt/scripts/create_network.sh:
+  file.managed:
+    - source: salt://network/wifi.sh.jinja
+    - template: jinja
+    - makedirs: True
+    - user: vercapi
+    - group: users
+    - mode: 770
