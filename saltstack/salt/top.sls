@@ -20,3 +20,4 @@ base:
     - kbvb
     - java
     - jdeveloper
+    - audio
