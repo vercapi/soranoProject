@@ -1,6 +1,3 @@
-bumblebee:
-  group.present
-
 vercapi:
   group.present:
     - gid: 2200
@@ -11,5 +8,3 @@ vercapi:
     - fullname: Pieter Vercammen
     - uid: 2200
     - gid: 2200
-    - groups:
-      - bumblebee

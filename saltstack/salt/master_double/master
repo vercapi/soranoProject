@@ -649,7 +649,7 @@
 #
 file_roots:
   base:
-    - /home/vercapi/Documents/projects/soranoProject/salt/saltstack/
+    - /home/vercapi/Documents/projects/soranoProject/saltstack/salt
     - /srv/salt/
 
 

@@ -1,5 +1,8 @@
 emacs:
-  pkg.installed
+  pkg.installed:
+    - pkgs:
+        - emacs
+        - plantuml
 
 dot_emacs:
   git.cloned:

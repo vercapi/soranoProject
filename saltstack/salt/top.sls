@@ -1,23 +1,29 @@
 base:
 
   '*':
-    - ssh
-    - sorano_base
+    - network/ssh
     - sudoers
 
   'controller':
-    - master_config
+    - master
 
   'SRN001':
-    - tech-ui
     - users
     - network
-    - tech-ui.emacs
+    - xdisplay
     - pacman
     - master_double
-    - docker_builder
-    - beacons
-    - kbvb
-    - java
-    - jdeveloper
+    - environments/KBVB
+    - software/java
+    - software/jdeveloper
     - audio
+    - time
+    - fs/usb
+    - software/devops
+    - software/CAD
+    - software/graphics
+    - software/3d_printing
+    - software/3d_modelling
+    - software/docker
+    - software/git
+    - desktop

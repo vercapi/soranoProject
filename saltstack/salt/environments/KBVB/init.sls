@@ -3,7 +3,7 @@ openvpn:
 
 /etc/openvpn/update-resolv-conf.sh:
   file.managed:
-    - source: salt://update-resolv-conf.sh
+    - source: salt://environments/KBVB/update-resolv-conf.sh
     - user: root
     - group: root
     - mode: 774

@@ -12,19 +12,18 @@ eth0:
 
 {% if not salt['file.directory_exists' ]('/etc/apt/sources.list.d/saltstack.list') %}
 
-#add-key:
-#  cmd.run:
-#    - name: wget -O - https://repo.saltstack.com/py3/debian/10/armhf/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
-#    - shell: '/bin/bash'
+add-key:
+  cmd.run:
+    - name: wget -O - https://repo.saltstack.com/py3/debian/10/armhf/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+    - shell: '/bin/bash'
 
 /etc/apt/sources.list.d/saltstack.list:
   file.managed:
-    - source: salt://apt/saltstack.list
+    - source: salt://master/saltstack.list
     - user: root
     - group: root
     - mode: 644
-#    - require:
-#      - cmd: add-key
+    - require:
+      - cmd: add-key
 
 {% endif %}
-

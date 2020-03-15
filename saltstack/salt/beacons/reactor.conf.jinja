@@ -1,7 +1,0 @@
-reactor:
-   {% for file in pillar['git-watch-list'] %}
-     {% for key, value in file.iteritems() %}
-    - salt/beacon/SRN001/inotify/{{ value.source }}:
-      - salt://reactor/copy_{{ key }}.sls
-     {% endfor %}
-   {% endfor %}
