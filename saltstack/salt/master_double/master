@@ -560,7 +560,7 @@
 #renderer: yaml_jinja
 
 # Default Jinja environment options for all templates except sls templates
-#jinja_env:
+jinja_env:
 #  block_start_string: '{%'
 #  block_end_string: '%}'
 #  variable_start_string: '{{'
@@ -569,13 +569,13 @@
 #  comment_end_string: '#}'
 #  line_statement_prefix: 
 #  line_comment_prefix: 
-#  trim_blocks: False
-#  lstrip_blocks: False
+   trim_blocks: True
+   lstrip_blocks: True
 #  newline_sequence: '\n'
 #  keep_trailing_newline: False
 
 # Jinja environment options for sls templates
-#jinja_sls_env:
+jinja_sls_env:
 #  block_start_string: '{%'
 #  block_end_string: '%}'
 #  variable_start_string: '{{'
@@ -584,8 +584,8 @@
 #  comment_end_string: '#}'
 #  line_statement_prefix: 
 #  line_comment_prefix: 
-#  trim_blocks: False
-#  lstrip_blocks: False
+   trim_blocks: True
+   lstrip_blocks: True
 #  newline_sequence: '\n'
 #  keep_trailing_newline: False
 
