@@ -1,0 +1,12 @@
+{% for connection in pillar['ssh-list'] %}
+{% for key,value in connection.iteritems() %}
+Host {{ key }}
+     Hostname {{ value.hostname }}
+     {% if value.user is defined %}
+     User {{ value.user }}
+     {% endif %}
+     {% if value.IdentityFile is defined %}
+     IdentityFile {{ value.IdentityFile }}
+     {% endif %}
+{%endfor%}
+{%endfor%}
