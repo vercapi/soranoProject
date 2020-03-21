@@ -5,8 +5,17 @@ xmonad:
         - xmonad-contrib
         - xmonad-utils
         - xmobar
-        - rofi
-        - termite
+        - rofi # launcher
+        - termite # terminale emulater
+        - xorg-xev # ro find keybindings
+        - xbindkeys # For media bindings
+        - xorg-xbacklight # Conteol screen backlight
+
+/home/vercapi/.xbindkeysrc:
+  file.managed:
+    - source: salt://desktop/xbindkeysrc
+    - user: vercapi
+    - group: vercapi
 
 /home/vercapi/.xmonad/xmonad.hs:
   file.managed:
