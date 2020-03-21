@@ -1,4 +1,4 @@
-Config { font = "xft:xos4 Terminus:size=9:bold:antialias=true"
+Config { font = "xft:ProggyVector:size=9:antialias=true"
         , borderColor = "black"
         , border = TopB
         , bgColor = "black"
