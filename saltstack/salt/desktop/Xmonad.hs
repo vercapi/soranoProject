@@ -3,12 +3,14 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import qualified Data.Map as M
+import XMonad.Hooks.EwmhDesktops
 
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
     { terminal    = "termite"
     , modMask     = mod4Mask
     , keys        = \c -> myKeys c `M.union` keys defaultConfig c
-    , startupHook = setWMName "LG3D"
+    , startupHook = setWMName "LG3D" -- needed for java apps (only for HiDPI?)
+    , handleEventHook    = fullscreenEventHook -- Needed for chromium fullscreen to work
     }
   where
     -- keybindings
