@@ -7,8 +7,16 @@ packages:
       - docker-engine
       {% endif %}
 
-docker:
+service:
   service.running:
+    - name: docker
     - enable: True
     - require:
       - pkg: packages
+
+groups:        
+  group.present:
+    - name: docker
+    - system: true
+    - addusers:
+        - vercapi
