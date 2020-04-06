@@ -44,13 +44,6 @@ bumblebee:
     - user: vercapi
     - group: vercapi
 
-/home/vercapi/.xinitrc:
-  file.managed:
-    - source: salt://xdisplay/xinitrc
-    - user: vercapi
-    - group: vercapi
-    - makedirs: True
-
 run_scaled_dependencies:
   pkg.installed:
     - pkgs:
