@@ -26,4 +26,5 @@ base:
     - software/3d_modelling
     - software/docker
     - software/git
+    - software/remote_desktop
     - desktop
