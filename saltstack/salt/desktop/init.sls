@@ -5,11 +5,18 @@ xmonad:
         - xmonad-contrib
         - xmonad-utils
         - xmobar
+        - lightdm # display manager / login screen
+        - lightdm-webkit2-greeter # html/css theming for light dm login screen
         - rofi # launcher
         - termite # terminale emulater
         - xorg-xev # ro find keybindings
         - xbindkeys # For media bindings
         - xorg-xbacklight # Conteol screen backlight
+        - feh # Setting background
+
+/etc/lightdm/lightdm.conf:
+  file.managed:
+    - source: salt://desktop/lightdm.conf
 
 /home/vercapi/.xbindkeysrc:
   file.managed:
@@ -28,6 +35,11 @@ xmonad:
     - source: salt://desktop/Xmonad.hs
     - user: vercapi
     - group: vercapi
+
+/usr/share/pixmaps/wallpaper.jpg:
+  file.managed:
+    - source: salt://desktop/wallpaper.jpg
+    - mode: 644
 
 /home/vercapi/.xmobarrc:
   file.managed:
