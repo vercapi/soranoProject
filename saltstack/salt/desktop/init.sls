@@ -26,6 +26,18 @@ xmonad:
   file.managed:
     - source: salt://desktop/lightdm.conf
 
+/etc/lightdm/lightdm-webkit2-greeter.conf:
+  file.managed:
+    - source: salt://desktop/lightdm-webkit2-greeter.conf
+
+/usr/share/lightdm-webkit/themes/enkel:
+  file.recurse:
+    - source: salt://local/desktop/enkel
+    - makedirs: true
+    - recurse:
+        - user
+        - group
+
 /home/vercapi/.xbindkeysrc:
   file.managed:
     - source: salt://desktop/xbindkeysrc
