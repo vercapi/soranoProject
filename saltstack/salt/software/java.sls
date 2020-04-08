@@ -1,7 +1,8 @@
-jdk8-openjdk:
+java:
   pkg.installed:
     - pkgs:
         - maven
+        - jdk-openjdk
 
 /home/vercapi/.m2/settings.xml:
   file.managed:
