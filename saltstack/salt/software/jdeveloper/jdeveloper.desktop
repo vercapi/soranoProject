@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=12.2.1.2
+Name=Jdeveloper
+Icon=jdeveloper
+Exec=jdev
+MimeType=application/x-jdeveloper;
