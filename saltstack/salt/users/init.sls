@@ -11,6 +11,10 @@ vercapi:
 
 /home/vercapi/.bash_profile:
   file.managed:
-    - source: salt://bash_profile
+    - source: salt://users/bash_profile
     - user: vercapi
     - group: vercapi
+
+/home/vercapi/.bashrc:
+  file.managed:
+    - source: salt://users/bashrc

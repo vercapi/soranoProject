@@ -4,6 +4,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import qualified Data.Map as M
 import XMonad.Hooks.EwmhDesktops
+import Colors -- generated with pywal
 
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
     { terminal    = "termite"
@@ -28,6 +29,7 @@ launcher = "GDK_DPI_SCALE=0.5 GDK_SCALE=2 rofi -combi-modi drun,ssh -show combi"
 
 lock = "light-locker-command -l"
 
-myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
+myPP = xmobarPP { ppCurrent = xmobarColor color2 "" . wrap "<" ">"
+                , ppTitle = xmobarColor color2 "" . shorten 100}
 
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)

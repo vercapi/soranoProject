@@ -13,6 +13,14 @@ xmonad:
         - xbindkeys # For media bindings
         - xorg-xbacklight # Conteol screen backlight
         - feh # Setting background
+        - picom # compositor for transparency
+        - python-pywal
+
+/home/vercapi/.config/picom.conf:
+  file.managed:
+    - source: salt://desktop/picom.conf
+    - user: vercapi
+    - group: vercapi
 
 /etc/lightdm/lightdm.conf:
   file.managed:
@@ -21,6 +29,13 @@ xmonad:
 /home/vercapi/.xbindkeysrc:
   file.managed:
     - source: salt://desktop/xbindkeysrc
+    - user: vercapi
+    - group: vercapi
+
+/home/vercapi/.xmonad/lib/Colors.hs:
+  file.symlink:
+    - target: /home/vercapi/.cache/wal/colors.hs
+    - makedirs: true
     - user: vercapi
     - group: vercapi
 
