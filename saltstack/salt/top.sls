@@ -28,3 +28,4 @@ base:
     - software/git
     - software/remote_desktop
     - desktop
+    - monitoring
