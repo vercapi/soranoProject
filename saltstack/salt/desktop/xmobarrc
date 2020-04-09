@@ -1,30 +1,31 @@
 Config { font = "xft:ProggyVector:size=9:antialias=true"
+        , additionalFonts = [ "xft:Font Awesome 5 Free Solid:style=Solid:pixelsize=25" ]
         , borderColor = "#060508"
         , border = TopB
         , bgColor = "#060508"
         , fgColor = "#7dbcd1"
         , position = TopW L 100
-        , commands = [ Run DynNetwork [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+        , commands = [ Run DynNetwork [ "--template" , "<dev> <fn=1></fn> <tx>kB/s|<rx>kB/s"
                           , "--Low"      , "110000"       -- units: B/s
                           , "--High"     , "900000"       -- units: B/s
                           , "--low"      , "#056a90"
                           , "--normal"   , "#056a90"
                           , "--high"     , "#ce0514"
                         ] 10
-                        , Run Wireless "wlp59s0" ["--template", "<essid> <qualityvbar>","--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
-                        , Run Cpu ["-L","3","-H","50","--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
-                        , Run Memory ["-t","Mem: <usedratio>%","--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
-                        , Run Swap ["--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
+                        , Run Wireless "wlp59s0" ["--template", "<essid> <fn=1></fn> <quality>%","--low","#ce0514","--normal","#056a90","--high","#056a90"] 10
+                        , Run Cpu ["-t","<fn=1></fn> <total>%","-L","3","-H","50","--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
+                        , Run Memory ["-t","<fn=1></fn> <usedratio>%","--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
+                        , Run Swap ["-t", "<fn=1></fn><usedratio>%", "--low","#056a90","--normal","#056a90","--high","#ce0514"] 10
                         , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
                         , Run StdinReader
                         , Run Battery ["-t", "<acstatus> (<left>%/<timeleft>)",
-                                                 "-L", "10", "-H", "80", "-p", "3",
-                                                 "--", "-O", "<fc=#056a90>AC</fc>", "-i", "Idle",
-                                                 "-L", "-15", "-H", "-5", "-o", "<fc=#056a90>Battery</fc>",
+                                                 "-L", "20", "-H", "80", "-p", "3",
+                                                 "--", "-O", "<fc=#056a90><fn=1></fn></fc>", "-i", "Idle",
+                                                 "-o", "<fc=#056a90><fn=1></fn></fc>",
                                                  "-l", "#ce0514", "-m", "#056a90", "-h", "#056a90"]
                                                 600
                         ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%StdinReader%}{%battery% %cpu% | %memory% * %swap% | %dynnetwork% | %wlp59s0wi% | <fc=#9F030C>%date%</fc>"
+        , template = "%StdinReader%}{%battery% %cpu% | %memory% * %swap% | %dynnetwork% | %wlp59s0wi% <fc=#9F030C><fn=1></fn> %date%</fc>"
         }

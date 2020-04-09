@@ -7,11 +7,11 @@ import XMonad.Hooks.EwmhDesktops
 import Colors -- generated with pywal
 
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
-    { terminal    = "termite"
-    , modMask     = mod4Mask
-    , keys        = \c -> myKeys c `M.union` keys defaultConfig c
-    , startupHook = myStartupHook
-    , handleEventHook    = fullscreenEventHook -- Needed for chromium fullscreen to work
+    { terminal        = "termite"
+    , modMask         = mod4Mask
+    , keys            = \c -> myKeys c `M.union` keys defaultConfig c
+    , startupHook     = myStartupHook
+    , handleEventHook = fullscreenEventHook -- Needed for chromium fullscreen to work
     }
   where
     -- keybindings
@@ -30,6 +30,7 @@ launcher = "GDK_DPI_SCALE=0.5 GDK_SCALE=2 rofi -combi-modi drun,ssh -show combi"
 lock = "light-locker-command -l"
 
 myPP = xmobarPP { ppCurrent = xmobarColor color2 "" . wrap "<" ">"
-                , ppTitle = xmobarColor color2 "" . shorten 100}
+                , ppTitle = xmobarColor color2 "" . shorten 100
+                , ppUrgent = xmobarColor color2 "" . wrap "!" "!" }
 
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
