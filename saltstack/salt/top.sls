@@ -27,5 +27,6 @@ base:
     - software/docker
     - software/git
     - software/remote_desktop
+    - software/utils
     - desktop
     - monitoring
