@@ -30,3 +30,4 @@ base:
     - software/utils
     - desktop
     - monitoring
+    - software/document_conversion
