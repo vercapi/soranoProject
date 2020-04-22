@@ -31,3 +31,4 @@ base:
     - desktop
     - monitoring
     - software/document_conversion
+    - software/clojure
