@@ -2,4 +2,5 @@ software:
   pkg.installed:
     - pkgs:
         - remmina # gtk app
-        - freerdp # protocol
+        - freerdp # Enable remore desktop in remmina
+        - libvncserver # enable VNC in remmina
