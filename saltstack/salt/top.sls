@@ -32,3 +32,5 @@ base:
     - monitoring
     - software/document_conversion
     - software/clojure
+    - software/movie_player
+    - software/virtualbox
