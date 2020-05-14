@@ -26,6 +26,8 @@ xorg-server:
       - xorg-xdpyinfo
       - xorg-xrandr
       - xorg-xrdb
+      - nvidia-settings
+      - autorandr # save and detect screen configurations
 
 bumblebee:
   group.present:
