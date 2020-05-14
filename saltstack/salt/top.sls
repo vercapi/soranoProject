@@ -35,3 +35,4 @@ base:
     - software/clojure
     - software/movie_player
     - software/virtualbox
+    - software/toys
