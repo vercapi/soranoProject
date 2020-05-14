@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=19c
+Name=SQLDeveloper 19c
+Icon=sqldeveloper
+Exec=sqldeveloper
+MimeType=application/x-sqldeveloper;

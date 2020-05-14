@@ -16,6 +16,7 @@ base:
     - environments/KBVB
     - software/java
     - software/jdeveloper
+    - software/sqldeveloper
     - audio
     - time
     - fs/usb
