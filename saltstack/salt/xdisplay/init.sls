@@ -77,3 +77,15 @@ ttf-bitstream-vera:
         - noto-fonts
         - ttf-ubuntu-font-family
         - gnu-free-fonts
+
+/home/vercapi/.config/autorandr/desktop/config:
+  file.managed:
+    - source: salt://xdisplay/autorandr_desktop_config
+    - user: vercapi
+    - group: vercapi
+
+/home/vercapi/.config/autorandr/desktop/setup:
+  file.managed:
+    - source: salt://xdisplay/autorandr_desktop_setup
+    - user: vercapi
+    - group: vercapi

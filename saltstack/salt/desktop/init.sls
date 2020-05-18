@@ -26,6 +26,11 @@ xmonad:
   file.managed:
     - source: salt://desktop/lightdm.conf
 
+/usr/share/lightdm/display-setup.sh:
+  file.managed:
+    - source: salt://desktop/display-setup.sh
+    - mode: 744
+
 /etc/lightdm/lightdm-webkit2-greeter.conf:
   file.managed:
     - source: salt://desktop/lightdm-webkit2-greeter.conf
@@ -60,6 +65,7 @@ xmonad:
 /home/vercapi/.xmonad/xmonad.hs:
   file.managed:
     - source: salt://desktop/Xmonad.hs
+    - template: jinja
     - user: vercapi
     - group: vercapi
 

@@ -3,3 +3,4 @@ install_utils:
     - pkgs:
         - flameshot # screenshot utlity
         - zip #compressing and uncompressing
+        - pv #Monitor progress
