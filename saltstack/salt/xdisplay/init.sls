@@ -43,6 +43,7 @@ bumblebee:
 /home/vercapi/.Xresources:
   file.managed:
     - source: salt://xdisplay/Xresources
+    - template: jinja
     - user: vercapi
     - group: vercapi
 

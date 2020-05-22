@@ -1,2 +1,2 @@
 rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
-rofi.dpi: 192
+rofi.dpi: {{ grains['dpi_settings']['dpi'] }}

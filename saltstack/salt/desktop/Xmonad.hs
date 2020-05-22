@@ -63,7 +63,7 @@ myStartupHook = do
 
 myBar = "xmobar"
 
-launcher = "GDK_DPI_SCALE=0.5 GDK_SCALE=2 rofi -combi-modi drun,ssh -show combi"
+launcher = "GDK_DPI_SCALE={{ grains['dpi_settings']['GDK_DPI_SCALE'] }} GDK_SCALE={{ grains['dpi_settings']['GDK_SCALE'] }} rofi -combi-modi drun,ssh -show combi"
 
 lock = "light-locker-command -l"
 

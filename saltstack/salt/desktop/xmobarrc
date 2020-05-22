@@ -1,5 +1,5 @@
 Config { font = "xft:ProggyVector:size=9:antialias=true"
-        , additionalFonts = [ "xft:Font Awesome 5 Free Solid:style=Solid:pixelsize=25" ]
+        , additionalFonts = [ "xft:Font Awesome 5 Free Solid:style=Solid:pixelsize={{ grains['dpi_settings']['mobar_icon_size']}}" ]
         , borderColor = "#060508"
         , border = TopB
         , bgColor = "#060508"
@@ -27,5 +27,7 @@ Config { font = "xft:ProggyVector:size=9:antialias=true"
                         ]
         , sepChar = "%"
         , alignSep = "}{"
+        {% raw %}
         , template = "%StdinReader%}{%battery% %cpu% | %memory% * %swap% | %dynnetwork% | %wlp59s0wi% <fc=#9F030C><fn=1></fn> %date%</fc>"
+        {% endraw %}
         }

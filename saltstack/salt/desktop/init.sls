@@ -29,6 +29,7 @@ xmonad:
 /usr/share/lightdm/display-setup.sh:
   file.managed:
     - source: salt://desktop/display-setup.sh
+    - makedirs: true
     - mode: 744
 
 /etc/lightdm/lightdm-webkit2-greeter.conf:
@@ -77,6 +78,7 @@ xmonad:
 /home/vercapi/.xmobarrc:
   file.managed:
     - source: salt://desktop/xmobarrc
+    - template: jinja
     - user: vercapi
     - group: vercapi
 
@@ -90,6 +92,7 @@ xmonad:
 /home/vercapi/.config/rofi/config:
  file.managed:
    - source: salt://desktop/rofi-config
+   - template: jinja
    - user: vercapi
    - group: vercapi
    - makedirs: True

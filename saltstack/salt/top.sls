@@ -11,6 +11,7 @@ base:
     - users
     - network
     - xdisplay
+    - xdisplay/hidpi
     - pacman
     - master_double
     - environments/KBVB
@@ -36,3 +37,5 @@ base:
     - software/movie_player
     - software/virtualbox
     - software/toys
+    - software/spotify
+    - flatpak
