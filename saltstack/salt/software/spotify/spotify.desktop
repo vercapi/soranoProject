@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=0
+Name=Spotify
+Icon=Spotify
+Exec=flatpak run com.spotify.Client
+MimeType=application/x-spotify;
