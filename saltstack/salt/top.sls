@@ -38,4 +38,5 @@ base:
     - software/virtualbox
     - software/toys
     - software/spotify
+    - software/eid
     - flatpak
