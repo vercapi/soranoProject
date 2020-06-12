@@ -90,3 +90,15 @@ ttf-bitstream-vera:
     - source: salt://xdisplay/autorandr_desktop_setup
     - user: vercapi
     - group: vercapi
+
+/home/vercapi/.config/autorandr/laptop/config:
+  file.managed:
+    - source: salt://xdisplay/autorandr_laptop_config
+    - user: vercapi
+    - group: vercapi
+
+/home/vercapi/.config/autorandr/laptop/setup:
+  file.managed:
+    - source: salt://xdisplay/autorandr_laptop_setup
+    - user: vercapi
+    - group: vercapi
