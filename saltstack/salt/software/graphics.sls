@@ -3,3 +3,4 @@ graphics:
     - pkgs:
         - gimp
         - inkscape
+        - krita
