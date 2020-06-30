@@ -40,4 +40,5 @@ base:
     - software/spotify
     - software/eid
     - flatpak
+    - software/office
     - software/networking_utils
