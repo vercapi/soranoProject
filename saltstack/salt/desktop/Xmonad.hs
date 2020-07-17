@@ -58,6 +58,7 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
     myKeys (XConfig {modMask = mod4Mask}) = M.fromList $
          [ ((mod4Mask, xK_r), spawn launcher)
          , ((mod4Mask .|. controlMask, xK_l), spawn lock)
+         , ((mod4Mask .|. controlMask, xK_s), spawn auto_screen)
          , ((mod4Mask .|. controlMask, xK_space), layoutScreens 2 (TwoPane 0.25 0.75))
          , ((mod4Mask .|. controlMask .|. shiftMask, xK_space), rescreen)]
 
@@ -70,6 +71,8 @@ myBar = "xmobar"
 launcher = "GDK_DPI_SCALE={{ grains['dpi_settings']['GDK_DPI_SCALE'] }} GDK_SCALE={{ grains['dpi_settings']['GDK_SCALE'] }} rofi -combi-modi drun,ssh -show combi"
 
 lock = "light-locker-command -l"
+
+auto_screen = "autorandr -c"
 
 myPP = xmobarPP { ppCurrent = xmobarColor color2 "" . wrap "<" ">"
                 , ppTitle = xmobarColor color2 "" . shorten 100
