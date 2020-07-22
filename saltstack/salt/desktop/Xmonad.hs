@@ -12,6 +12,7 @@ import XMonad.Layout.Circle
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.LayoutScreens
 import XMonad.Layout.TwoPane
+import XMonad.Layout.Gaps
 
 defaultLayouts = smartBorders(
 
@@ -59,7 +60,7 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
          [ ((mod4Mask, xK_r), spawn launcher)
          , ((mod4Mask .|. controlMask, xK_l), spawn lock)
          , ((mod4Mask .|. controlMask, xK_s), spawn auto_screen)
-         , ((mod4Mask .|. controlMask, xK_space), layoutScreens 2 (TwoPane 0.25 0.75))
+         , ((mod4Mask .|. controlMask, xK_space), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.25 0.75))
          , ((mod4Mask .|. controlMask .|. shiftMask, xK_space), rescreen)]
 
 myStartupHook = do
