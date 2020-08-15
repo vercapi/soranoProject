@@ -1,4 +1,4 @@
 office:
   pkg.installed:
     - pkgs:
-        - libreoffice-fresh
+      - libreoffice-fresh
