@@ -30,19 +30,16 @@ xmonad:
   file.managed:
     - source: salt://desktop/display-setup.sh
     - makedirs: true
-    - mode: 744
+    - mode: 755
 
 /etc/lightdm/lightdm-webkit2-greeter.conf:
   file.managed:
     - source: salt://desktop/lightdm-webkit2-greeter.conf
 
-/usr/share/lightdm-webkit/themes/enkel:
-  file.recurse:
-    - source: salt://local/desktop/enkel
-    - makedirs: true
-    - recurse:
-        - user
-        - group
+lightdm-theme:
+  pkg.installed:
+    - pkgs:
+        - lightdm-webkit-theme-litarvan
 
 /home/vercapi/.xbindkeysrc:
   file.managed:

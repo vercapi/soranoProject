@@ -1,1 +1,2 @@
-autorandr -c
+#!/bin/sh
+autorandr -c > /tmp/autorandr.log

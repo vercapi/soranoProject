@@ -102,3 +102,23 @@ ttf-bitstream-vera:
     - source: salt://xdisplay/autorandr_laptop_setup
     - user: vercapi
     - group: vercapi
+
+/etc/xdg/autorandr/desktop/setup:
+  file.managed:
+    - source: salt://xdisplay/autorandr_desktop_setup
+    - makedirs: True
+
+/etc/xdg/autorandr/desktop/config:
+  file.managed:
+    - source: salt://xdisplay/autorandr_desktop_config
+    - makedirs: True
+
+/etc/xdg/autorandr/laptop/config:
+  file.managed:
+    - source: salt://xdisplay/autorandr_laptop_config
+    - makedirs: True
+
+/etc/xdg/autorandr/laptop/setup:
+  file.managed:
+    - source: salt://xdisplay/autorandr_laptop_setup
+    - makedirs: True
