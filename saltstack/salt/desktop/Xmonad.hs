@@ -57,11 +57,13 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
   where
     -- keybindings
     myKeys (XConfig {modMask = mod4Mask}) = M.fromList $
-         [ ((mod4Mask, xK_r), spawn launcher)
+         [ ((mod4Mask, xK_x), spawn launcher)
          , ((mod4Mask .|. controlMask, xK_l), spawn lock)
          , ((mod4Mask .|. controlMask, xK_s), spawn auto_screen)
-         , ((mod4Mask .|. controlMask, xK_space), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.25 0.75))
-         , ((mod4Mask .|. controlMask .|. shiftMask, xK_space), rescreen)]
+         , ((mod4Mask .|. controlMask, xK_1), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.25 0.75))
+         , ((mod4Mask .|. controlMask, xK_2), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.5 0.5))
+         , ((mod4Mask .|. controlMask, xK_3), layoutScreens 3 (gaps [(U,18)] $ ThreeColMid 1 (3/100) (1/2)))
+         , ((mod4Mask .|. controlMask, xK_0), rescreen)]
 
 myStartupHook = do
   setWMName "LG3D" -- needed for java apps (only for HiDPI?)
