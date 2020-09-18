@@ -15,6 +15,7 @@ xmonad:
         - feh # Setting background
         - picom # compositor for transparency
         - python-pywal
+        - stalonetray
 
 /home/vercapi/.config/picom.conf:
   file.managed:
@@ -75,6 +76,13 @@ lightdm-theme:
 /home/vercapi/.xmobarrc:
   file.managed:
     - source: salt://desktop/xmobarrc
+    - template: jinja
+    - user: vercapi
+    - group: vercapi
+
+/home/vercapi/.stalonetrayrc:
+  file.managed:
+    - source: salt://desktop/stalonetrayrc
     - template: jinja
     - user: vercapi
     - group: vercapi
