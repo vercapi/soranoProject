@@ -6,7 +6,6 @@ xmonad:
         - xmonad-utils
         - xmobar
         - lightdm # display manager / login screen
-        - lightdm-webkit2-greeter # html/css theming for light dm login screen
         - rofi # launcher
         - termite # terminale emulater
         - xorg-xev # ro find keybindings
@@ -16,6 +15,7 @@ xmonad:
         - picom # compositor for transparency
         - python-pywal
         - stalonetray
+        - xorg-server-xephyr # needed for testing lightdm (and other things)
 
 /home/vercapi/.config/picom.conf:
   file.managed:
@@ -33,14 +33,9 @@ xmonad:
     - makedirs: true
     - mode: 755
 
-/etc/lightdm/lightdm-webkit2-greeter.conf:
+/etc/lightdm/lightdm-mini-greeter.conf:
   file.managed:
-    - source: salt://desktop/lightdm-webkit2-greeter.conf
-
-lightdm-theme:
-  pkg.installed:
-    - pkgs:
-        - lightdm-webkit-theme-litarvan
+    - source: salt://desktop/lightdm-mini-greeter.conf
 
 /home/vercapi/.xbindkeysrc:
   file.managed:
