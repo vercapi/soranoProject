@@ -3,6 +3,7 @@ emacs:
     - pkgs:
         - emacs
         - plantuml
+        - libvterm
 
 dot_emacs:
   git.cloned:
