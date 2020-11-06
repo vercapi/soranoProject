@@ -8,3 +8,5 @@ pulseAudio:
         - pulseaudio-equalizer
         - pulseeffects
         - projectm-pulseaudio
+        - pulseaudio-bluetooth 
+        - bluez-utils # bluethoot utilities
