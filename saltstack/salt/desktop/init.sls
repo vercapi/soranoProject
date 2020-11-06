@@ -16,6 +16,7 @@ xmonad:
         - python-pywal
         - stalonetray
         - xorg-server-xephyr # needed for testing lightdm (and other things)
+        - xclip
 
 /home/vercapi/.config/picom.conf:
   file.managed:
