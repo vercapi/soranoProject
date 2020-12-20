@@ -11,6 +11,10 @@ pulseAudio:
         - pulseaudio-bluetooth 
         - bluez-utils # bluethoot utilities
 
+bluetooth.service:
+  service.running:
+    - enable: True
+
 /etc/pulse/system.pa:
   file.append:
     - text: |
