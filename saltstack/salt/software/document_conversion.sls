@@ -3,3 +3,4 @@ document_conversion:
     - pkgs:
         - pandoc
         - texlive-core
+        - texlive-latexextra
