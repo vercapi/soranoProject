@@ -63,6 +63,7 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey desktopConfig
          , ((mod4Mask .|. controlMask, xK_1), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.25 0.75))
          , ((mod4Mask .|. controlMask, xK_2), layoutScreens 2 (gaps [(U,18)] $ TwoPane 0.5 0.5))
          , ((mod4Mask .|. controlMask, xK_3), layoutScreens 3 (gaps [(U,18)] $ ThreeColMid 1 (3/100) (1/2)))
+         , ((mod4Mask .|. controlMask, xK_4), layoutScreens 3 (gaps [(U,18)] $ ThreeColMid 1 (3/100) (1/3)))
          , ((mod4Mask .|. controlMask, xK_0), rescreen)]
 
 myStartupHook = do
